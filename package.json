@@ -11,5 +11,8 @@
     "url": "http://saussesylva.in:8080/git/maxlem24/guerre_des_carres.git"
   },
   "author": "maxlem24",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
