@@ -1,0 +1,40 @@
+<head>
+    <title>Guerre des Carrés</title>
+    <meta charset="utf-8">
+    <style>
+        .square {
+        height: 50px;
+        width: 50px;
+        background-color: #ff0000;
+        float:left;
+        }
+        .head {
+        text-align: center;
+        font-family: fantasy;
+        font-size: 200px;
+        color: aquamarine;
+        }
+        .square:hover{
+            background-color:aliceblue;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let line = ['#ff0000','#OO00ff','#000000']
+        function hovering(x) {
+            console.log(line[0]);
+}
+    </script>
+    <div>
+        <h1 class="head">
+            Bienvenue
+        </h1>
+        <div>
+            <div class="square" onmouseover="hovering(this)">
+            </div>
+        </div>
+        
+    </div>
+</body>
