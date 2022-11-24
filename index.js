@@ -15,12 +15,18 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('user disconnected');
       });
-    io.on('connection', (socket) => {
+    
     socket.on('chat message', (msg) => {
         console.log('message: ' + msg);
     });
-    });
+    
   });
+
+socket.on('cliqué', () => {
+
+  console.log('il s\'est connecté !')
+
+})
 
 server.listen(3000, () => {
   console.log('listening on *:3000');
