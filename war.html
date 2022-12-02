@@ -1,11 +1,12 @@
 <head>
     <title>Guerre des Carrés</title>
     <meta charset="utf-8">
+    <script src="/socket.io/socket.io.js"></script>
     <style>
         .square {
         height: 50px;
         width: 50px;
-        background-color: #ff0000;
+        background-color: black;
         float:left;
         }
         .head {
@@ -14,27 +15,42 @@
         font-size: 200px;
         color: aquamarine;
         }
-        .square:hover{
-            background-color:aliceblue;
-            display: block;
+        #info{
+        text-align: left;
+        font-family: fantasy;
+        font-size: 150px;
+        color: pink; 
         }
     </style>
 </head>
 <body>
     <script>
-        let line = ['#ff0000','#OO00ff','#000000']
-        function hovering(x) {
-            console.log(line[0]);
-}
+        var color=0
+        let colors = ['black', 'white', 'gray', 'silver', 'maroon', 'red', 'purple', 'green', 'lime', 'olive', 'yellow', 'navy', 'blue', 'teal', 'aqua']
+        
+        function changing(square) {
+            color=color+1;
+            if(color===15){
+                color=0
+            }
+            square.style.backgroundColor=colors[color]
+            console.log(colors[color])
+                ;
+        }
+        function showing(x){
+            texttoshow=x.style.backgroundColor
+            document.getElementById("info").innerHTML = texttoshow;
+        }
+        
     </script>
     <div>
         <h1 class="head">
             Bienvenue
         </h1>
         <div>
-            <div class="square" onmouseover="hovering(this)">
-            </div>
+            <div class="square" onclick="changing(this)" onmouseover="showing(this)"></div>
         </div>
+        <div id="info"></div>
         
     </div>
 </body>
