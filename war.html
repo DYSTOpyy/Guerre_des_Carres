@@ -6,8 +6,9 @@
         .square {
         height: 50px;
         width: 50px;
-        background-color: black;
+        background-color: none;
         float:left;
+        position: absolute;
         }
         .head {
         text-align: center;
@@ -15,13 +16,21 @@
         font-size: 200px;
         color: aquamarine;
         }
-        #info{
-        text-align: left;
-        font-family: fantasy;
-        font-size: 150px;
-        color: pink; 
+        .overlay{
+        opacity: 0;
+        transition: .2s ease;
+        height: 100%;
+        width: 100%;
+        background-color: silver;
+        font-size: 80%;
+        }
+        .overlay:hover{
+        opacity:1;
         }
     </style>
+    <script>
+
+    </script>
 </head>
 <body>
     <script>
@@ -35,21 +44,19 @@
             }
             square.style.backgroundColor=colors[color]
             console.log(colors[color])
-                ;
         }
-        function showing(x){
-            texttoshow=x.style.backgroundColor
-            document.getElementById("info").innerHTML = texttoshow;
+        function showing(parent,element){
+            texttoshow=parent.style.backgroundColor
+            element.innerHTML = texttoshow;
         }
-        
     </script>
     <div>
         <h1 class="head">
             Bienvenue
         </h1>
-        <div>
-            <div class="square" onclick="changing(this)" onmouseover="showing(this)"></div>
-        </div>
+            <div class="square" onclick="changing(this)" >
+                <div class="overlay" onmouseover="showing(this.parentElement,this)"></div>
+            </div>
         <div id="info"></div>
         
     </div>
