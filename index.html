@@ -1,28 +1,48 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Socket.IO chat</title>
-    <style>
-      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <title>Mon site web</title>
 
-      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
-      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
-      #input:focus { outline: none; }
-      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+</head>
+<body>
+    <h1>Bonjour, nous sommes le 20/10/2022</h1>
+    <button id="button_black" type="button" class="monbouton" onclick="hoho(this.id)">
+    <button id="button_red" type="button" class="monbouton">
+    <button id="button_blue" type="button" class="monbouton">
+    <button id="button_green" type="button" class="monbouton">
+    <button id="button_white" type="button">
 
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages > li { padding: 0.5rem 1rem; }
-      #messages > li:nth-child(odd) { background: #efefef; }
-    </style>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
-    <button id="bouton"> Test </button>
-    
     <script src="/socket.io/socket.io.js"></script>
-    <script src="js/client.js"></script>
-  </body>
+    <script>
+        var socket = io('http://localhost');
+
+        function hoho(obet)
+        {
+            
+            test = document.getElementById(obet);
+        
+            // Emitting the event.
+            socket.emit("checkedTrue", obet);  
+
+            
+            
+        }
+
+        socket.on("change", (couleur, data) => {
+
+            
+            // document.getElementById(data).style.setProperty('background-color', 'red'); 
+            element = document.querySelector('.monbouton');
+            element.style.backgroundColor = 'red';
+
+            window.location = couleur;
+
+
+
+        });
+
+    </script>
+</body> 
 </html>
