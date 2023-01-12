@@ -6,20 +6,21 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/war.html');
   });
 
   
 io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('disconnect', () => {
-        console.log('user disconnected');
-      });
-    io.on('connection', (socket) => {
+    	console.log('user disconnected');
+    	});
     socket.on('chat message', (msg) => {
         console.log('message: ' + msg);
     });
-    });
+    socket.on('update',(id,color) =>{
+		console.log('Le carre '+ id+ ' est '+color)
+	})
   });
 
 server.listen(3000, () => {
