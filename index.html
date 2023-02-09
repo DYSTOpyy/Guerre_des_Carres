@@ -8,16 +8,80 @@
 </head>
 <body>
     <h1>Bonjour, nous sommes le 09/02/2023</h1>
+
     <button id="button_black" type="button" class="button_black" onclick="hoho(this.id)">
     <button id="button_red" type="button" class="button_red" onclick="hoho(this.id)">
     <button id="button_blue" type="button" class="button_blue" onclick="hoho(this.id)">
     <button id="button_green" type="button" class="button_green" onclick="hoho(this.id)">
-    <button id="button_white" type="button" class="button_white">
+    <button id="button_purple" type="button" class="button_purple" onclick="hoho(this.id)"></button>
+    <button id="button_white" type="button" class="button_white" onclick="border(this.id)"></button>
+
 
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
+
         var socket = io('http://localhost');
+        let lastSelected = "button_white";
+        let newDiv;
+        let currentDiv;
+
+        function border(obj) {
+
+            nouveau = document.getElementById(obj);
+            nouveau.style.border = "solid";
+            ancien = document.getElementById(lastSelected);
+            ancien.style.border = "none";
+            lastSelected = obj
+
+        }
+
+        // créer tous les blocs
+        for (let pas = 0; pas < 10; pas++) {
+
+            newDiv = document.createElement("div");
+        
+            for (let pas2 = 0; pas2 < 10; pas2++) {
+
+                let btn = document.createElement("button");
+                btn.id = "button_"+pas+"_"+pas2;
+                btn.classList.add('button_white');
+
+                // PROBLEME : il manque juste ça putain, pour que la bordure change
+                // btn.addEventListener("click", border (btn.id));
+
+                newDiv.appendChild(btn);
+
+            }
+
+            document.body.appendChild(newDiv);
+
+        }
+
+        // obtenir la valeur d'un cookie
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        // changer la valeur d'un cookie
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            let expires = "expires="+ d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
 
         function hoho(obet)
         {
@@ -34,12 +98,30 @@
 
         // quand on nous demande de changer la couleur d'une case
         socket.on("change", (couleur, idCarreAChanger) => {
+
+        element = document.querySelectorAll('.button_white');
             
-            // changer la couleur du carré blanc
-            element = document.querySelector('.button_white');
-            element.style.backgroundColor = couleur;
+        console.log(element);
+        // changer la couleur du carré blanc
+
+        element.forEach((userItem) => {
+            userItem.style.backgroundColor = couleur;
+        });
+            
 
         });
+
+        socket.on("manageCookie", () => {
+            let id = getCookie("id");
+            if (id != "") {
+                setCookie("id", id, 365);
+            } else {
+                id = socket.id;
+                if (id != "" && id != null) {
+                    setCookie("id", id, 365);
+                }
+            }
+        })
 
     </script>
 </body> 
