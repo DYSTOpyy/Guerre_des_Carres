@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <meta charset="UTF-8">
     <title>Mon site web</title>
 
 </head>
 <body>
-    <h1>Bonjour, nous sommes le 20/10/2022</h1>
-    <button id="button_black" type="button" class="monbouton" onclick="hoho(this.id)">
-    <button id="button_red" type="button" class="monbouton">
-    <button id="button_blue" type="button" class="monbouton">
-    <button id="button_green" type="button" class="monbouton">
-    <button id="button_white" type="button">
+    <h1>Bonjour, nous sommes le 09/02/2023</h1>
+    <button id="button_black" type="button" class="button_black" onclick="hoho(this.id)">
+    <button id="button_red" type="button" class="button_red" onclick="hoho(this.id)">
+    <button id="button_blue" type="button" class="button_blue" onclick="hoho(this.id)">
+    <button id="button_green" type="button" class="button_green" onclick="hoho(this.id)">
+    <button id="button_white" type="button" class="button_white">
+
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -20,26 +21,23 @@
 
         function hoho(obet)
         {
+            // obetenir l'attribut classe de l'objet, récupérer sa couleur dans le css, et l'envoyer en socket pour modifier la case
+            test = document.getElementById(obet).getAttribute("class");
+            //console.log(test);
+            element = document.querySelector("."+ test);
+            style = getComputedStyle(element).backgroundColor;
+            //  console.log(style);
             
-            test = document.getElementById(obet);
-        
-            // Emitting the event.
-            socket.emit("checkedTrue", obet);  
-
-            
+            socket.emit("checkedTrue", style);  
             
         }
 
-        socket.on("change", (couleur, data) => {
-
+        // quand on nous demande de changer la couleur d'une case
+        socket.on("change", (couleur, idCarreAChanger) => {
             
-            // document.getElementById(data).style.setProperty('background-color', 'red'); 
-            element = document.querySelector('.monbouton');
-            element.style.backgroundColor = 'red';
-
-            window.location = couleur;
-
-
+            // changer la couleur du carré blanc
+            element = document.querySelector('.button_white');
+            element.style.backgroundColor = couleur;
 
         });
 
