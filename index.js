@@ -12,6 +12,7 @@ app.get('/', (req, res) => {
   
 io.on('connection', (socket) => {
     console.log('a user connected');
+    socket.emit('newConnection');
     socket.on('disconnect', () => {
     	console.log('user disconnected');
     	});
@@ -19,7 +20,10 @@ io.on('connection', (socket) => {
         console.log('message: ' + msg);
     });
     socket.on('update',(id,color) =>{
-		console.log('Le carre '+ id+ ' est '+color)
+      console.log('Le carre '+ id+ ' est '+color);
+      console.log('Requete envoye');
+      io.emit('G_update',id,color);
+    
 	})
   });
 

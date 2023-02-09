@@ -6,8 +6,7 @@
         height: 50px;
         width: 50px;
         background-color: none;
-        float:left;
-        position: absolute;
+        display: inline-block;
         }
         .head {
         text-align: center;
@@ -35,27 +34,33 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
-        var color=0;
-        var list = document.getElementsByClassName("square");
-
+        
+        var colors = ['black', 'white', 'gray', 'silver', 'maroon', 'red', 'purple', 'green', 'lime', 'olive', 'yellow', 'navy', 'blue', 'teal', 'aqua']
+        
         function submit(id,bgcolor){
             socket.emit('update',id,bgcolor)
         }
-        for (var item of list) {
-            item.style.backgroundColor=color;
-        }
-
+        socket.on('newConnection',() =>{
+            console.log('connecte');
+            for (item of document.getElementsByClassName("square")) {
+                console.log(colors[0])
+                item.style.backgroundColor=colors[0];
+            }
+        })
+        socket.on('G_update',(name,Ncolor) =>{
+            console.log('recu !');
+            document.getElementById(name).style.backgroundColor=Ncolor;
+            document.getElementById(name).color=Ncolor;
+            })
         
-        let colors = ['black', 'white', 'gray', 'silver', 'maroon', 'red', 'purple', 'green', 'lime', 'olive', 'yellow', 'navy', 'blue', 'teal', 'aqua']
         
         function changing(square) {
+            color=colors.indexOf(square.style.backgroundColor);
             color=color+1;
             if(color===15){
                 color=0
             }
-            square.style.setProperty(backgroundColor,colors[color])
-            console.log(colors[color])
-            submit(square.id,getComputedStyle(square).backgroundColor)
+            submit(square.id,colors[color])
         }
         function showing(parent,element){
             texttoshow=getComputedStyle(parent).backgroundColor
@@ -66,10 +71,12 @@
         <h1 class="head">
             Bienvenue
         </h1>
-            <div class="square" onclick="changing(this)" color="this.style.background-color" id="0,0">
-                <div class="overlay" onmouseover="showing(this.parentElement,this)"></div>
-            </div>
+        <div class="square" onclick="changing(this)" id="0,0">
+            <div class="overlay" onmouseover="showing(this.parentElement,this)"></div>
+        </div>
+        <div class="square" onclick="changing(this)" id="1,0">
+            <div class="overlay" onmouseover="showing(this.parentElement,this)"></div>
+        </div>
         <div id="info"></div>
-        
     </div>
 </body>
