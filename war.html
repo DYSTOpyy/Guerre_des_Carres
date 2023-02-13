@@ -3,27 +3,32 @@
     <meta charset="utf-8">
     <style>
         .square {
-        height: 50px;
-        width: 50px;
-        background-color: none;
-        display: inline-block;
+            height: 50px;
+            width: 50px;
+            background-color: none;
+            display: inline-block;
         }
         .head {
-        text-align: center;
-        font-family: fantasy;
-        font-size: 200px;
-        color: aquamarine;
+            text-align: center;
+            font-family: fantasy;
+            font-size: 200px;
+            color: aquamarine;
         }
         .overlay{
-        opacity: 0;
-        transition: .2s ease;
-        height: 100%;
-        width: 100%;
-        background-color: silver;
-        font-size: 80%;
+            opacity: 0;
+            transition: .2s ease;
+            height: 100%;
+            width: 100%;
+            background-color: silver;
+            font-size: 80%;
         }
         .overlay:hover{
-        opacity:1;
+            opacity:1;
+        }
+        .row{
+            background-color: none;
+            height: 50px;
+            width: 500px;
         }
     </style>
     <script>
@@ -35,7 +40,7 @@
     <script>
         var socket = io();
         
-        var colors = ['black', 'white', 'gray', 'silver', 'maroon', 'red', 'purple', 'green', 'lime', 'olive', 'yellow', 'navy', 'blue', 'teal', 'aqua']
+        var colors = [ 'white', 'gray', 'silver', 'maroon', 'red', 'purple', 'green', 'lime', 'olive', 'yellow', 'navy', 'blue', 'teal', 'aqua','black']
         
         function submit(id,bgcolor){
             socket.emit('update',id,bgcolor)
@@ -45,6 +50,7 @@
             for (item of document.getElementsByClassName("square")) {
                 console.log(colors[0])
                 item.style.backgroundColor=colors[0];
+                item.style.borderColor=colors[0];
             }
         })
         socket.on('G_update',(name,Ncolor) =>{
@@ -62,10 +68,36 @@
             }
             submit(square.id,colors[color])
         }
-        function showing(parent,element){
+        
+    </script>
+    <script>
+    for (let pas = 0; pas < 10; pas++) {
+ 
+        newDiv = document.createElement("div");
+        newDiv.classList.add('row');
+
+        for (let pas2 = 0; pas2 < 10; pas2++) {
+
+            let carre = document.createElement("div");
+            carre.id = pas+","+pas2;
+            carre.classList.add('square');
+            carre.onclick = function () {changing(this);};
+                // let overlay = document.createElement("div");
+                // overlay.classList.add('overlay');
+                // overlay.onmouseover = function () {showing(this.parentElement,this)};
+                // carre.appendChild(overlay);
+            newDiv.appendChild(carre);
+
+        }
+
+        document.body.appendChild(newDiv);
+
+    }
+
+    function showing(parent,element){
             texttoshow=getComputedStyle(parent).backgroundColor
             element.innerHTML = texttoshow;
-        }
+    }
     </script>
     <div>
         <h1 class="head">
