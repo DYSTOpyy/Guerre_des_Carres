@@ -22,17 +22,20 @@
     <script>
 
         var socket = io('http://localhost');
-        let lastSelected = "button_white";
+        var lastSelected = document.getElementById("button_white");
         let newDiv;
         let currentDiv;
 
         function border(obj) {
 
-            nouveau = document.getElementById(obj);
-            nouveau.style.border = "solid";
-            ancien = document.getElementById(lastSelected);
-            ancien.style.border = "none";
-            lastSelected = obj
+            ancien = lastSelected;
+            console.log(ancien);
+            couleur=ancien.style.backgroundColor
+            ancien.style.borderColor = couleur;
+            //nouveau = document.getElementById(obj);
+            obj.style.borderColor = "black";
+            
+            lastSelected = obj;
 
         }
 
@@ -48,7 +51,7 @@
                 btn.classList.add('button_white');
 
                 // PROBLEME : il manque juste ça putain, pour que la bordure change
-                // btn.addEventListener("click", border (btn.id));
+                btn.onclick = function () {border(this);};
 
                 newDiv.appendChild(btn);
 
@@ -105,7 +108,8 @@
         // changer la couleur du carré blanc
 
         element.forEach((userItem) => {
-            userItem.style.backgroundColor = couleur;
+            userItem.style.backgroundColor = couleur
+            userItem.style.borderColor = couleur;
         });
             
 
