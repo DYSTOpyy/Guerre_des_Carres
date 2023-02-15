@@ -1,19 +1,7 @@
 {
-  "name": "guerre_des_carres",
-  "version": "1.0.0",
-  "description": "Project npm pour créer la guerre des cartes",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "http://saussesylva.in:8080/git/maxlem24/guerre_des_carres.git"
-  },
-  "author": "maxlem24",
-  "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "socket.io": "^4.5.3"
+    "prompt": "^1.3.0",
+    "socket.io": "^4.5.4"
   }
 }
