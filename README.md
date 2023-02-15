@@ -39,3 +39,13 @@ deja vu : rien faire
     un tableau avec tous les utilisateurs, une file (le premier est le dernier arrivé)
 
 - pseudo
+
+=====================
+Mise a jour 0.2
+
+- Clean le code 
+    - Un seul JS
+        - Le mettre dans un dossier JS
+        - Pouvoir lancer les deux pages .html
+        - Faire un sorte que les deux versions fonctionnent
+    - organiser les css

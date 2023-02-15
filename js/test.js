@@ -6,24 +6,6 @@ var http = require('http').createServer(app);
 var io = require("socket.io")(http);
 const { dirname } = require('path');
 
-process.setMaxListeners(0);     //askip c'est pas bien mais osef
-
-// inclure le dossier public !! pour tout ce qui est static (css, image) NOTE : il y a pas le '/' à la fin de public, il faut donc le mettre au début de tous les liens (ex : href="/css/style.css")
-app.use(express.static(__dirname + '/public'));
-
-// envoyer la page d'accueil lorsque l'on va sur /
-app.get('/', function(req,res){
-    res.sendFile(__dirname + '/index.html');
-}
-);
-
-
-
-// envoyer une autre page lorsque l'on va sur /basic.html
-app.get('/basic.html', function(req,res){
-  res.sendFile(__dirname + '/basic.html');
-});
-
 // lorsque quelqu'un se connecte au socket
 io.on("connection", function (socket) {
     console.log("Made socket connection");
