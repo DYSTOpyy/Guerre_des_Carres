@@ -49,3 +49,15 @@ Mise a jour 0.2
         - Pouvoir lancer les deux pages .html
         - Faire un sorte que les deux versions fonctionnent
     - organiser les css
+
+=====================
+Mise à jour 0.3
+
+-La même chose 
+- plus :    
+    -Implementation pinceau
+- moins :
+    - dossier JS
+    - les 2 pages
+
+    
