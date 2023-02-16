@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const path = require("path");
-const dir = path.resolve(__dirname, "..");
+const dir = path.resolve(__dirname);
 process.setMaxListeners(0); //askip c'est pas bien mais osef
 
 // inclure le dossier public !! pour tout ce qui est static (css, image) NOTE : il y a pas le '/' à la fin de public, il faut donc le mettre au début de tous les liens (ex : href="/css/styleBaobab.css")
