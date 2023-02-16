@@ -1,5 +1,6 @@
 var socket = io();
-var chosen_color = "white";
+var chosen_color = "olive";
+var mode ;
 
 var colors = [
   "white",
@@ -35,14 +36,20 @@ socket.on("G_update", (name, Ncolor) => {
   document.getElementById(name).color = Ncolor;
 });
 
-function changing(square) {
-  submit(square.id, chosen_color);
+// action lorque que le joueur clique sur une case
+function clicking(square) {
+  if (mode === "player"){
+    submit(square.id, chosen_color);
+  }
+  else{
+    showing(square);
+  }
 }
 
 function hoho(obet) {
   // obetenir l'attribut classe de l'objet, récupérer sa couleur dans le css, et l'envoyer en socket pour modifier la case
   test = document.getElementById(obet);
-  chosen_color = window.getComputedStyle(test).backgroundColor;
+  chosen_color = test.style.backgroundColor;
   socket.emit("checkedTrue", chosen_color);
 }
 
@@ -52,7 +59,7 @@ colors.forEach((item, index) => {
   let btn = document.createElement("button");
   btn.id = "button_" + item;
   btn.classList.add("button");
-  btn.backgroundColor = item;
+  btn.style.backgroundColor = item;
   btn.onclick = function () {
     hoho(this.id);
     border(this);
@@ -70,7 +77,8 @@ colors.forEach((item, index) => {
 });
 
 // bordure
-var lastSelected = document.getElementById("button_white");
+var lastSelected = document.getElementById("button_"+chosen_color);
+lastSelected.style.borderColor ="black";
 function border(obj) {
   ancien = lastSelected;
   ancien.style.borderColor = "white";
@@ -79,28 +87,45 @@ function border(obj) {
 }
 
 // créer les pixels
-for (let pas = 0; pas < 10; pas++) {
-  newDiv = document.createElement("div");
-  newDiv.classList.add("row");
-
-  for (let pas2 = 0; pas2 < 10; pas2++) {
-    let carre = document.createElement("div");
-    carre.id = pas + "," + pas2;
-    carre.classList.add("square");
-    carre.onclick = function () {
-      changing(this);
-    };
-    // let overlay = document.createElement("div");
-    // overlay.classList.add('overlay');
-    // overlay.onmouseover = function () {showing(this.parentElement,this)};
-    // carre.appendChild(overlay);
-    newDiv.appendChild(carre);
+play = document.createElement("div");
+play.classList.add("playground");
+  for (let pas = 0; pas < 13; pas++) {
+    newDiv = document.createElement("div");
+    newDiv.classList.add("row");
+    for (let pas2 = 0; pas2 < 20; pas2++) {
+      let carre = document.createElement("div");
+      carre.id = pas + "," + pas2;
+      carre.classList.add("square");
+      carre.onclick = function () {
+        clicking(this);
+      };
+      newDiv.appendChild(carre);
+    }
+    play.appendChild(newDiv);
   }
+document.body.appendChild(play);
 
-  document.body.appendChild(newDiv);
+function changeMode(){
+  if (mode === "player"){
+    mode = "viewer";
+    for (item of document.getElementsByClassName("button")) {
+      item.style.display ="none";
+    }
+    document.getElementById("info").style.display="block"
+  }
+  else{
+    mode = "player";
+    document.getElementById("info").style.display="none"
+    for (item of document.getElementsByClassName("button")) {
+      item.style.display ="inline-block";
+    }
+  }
+  document.getElementById("change").innerHTML=mode;
 }
 
-function showing(parent, element) {
-  texttoshow = parent.style.backgroundColor;
-  element.innerHTML = texttoshow;
+changeMode();
+
+function showing(element) {
+  texttoshow = element.style.backgroundColor;
+  document.getElementById("info").innerHTML = texttoshow;
 }
