@@ -7,7 +7,6 @@
 .head {
     text-align: center;
     font-family: fantasy;
-    /* rajouté par baobab : enlève la marge dessous */
     margin: 0px;
     font-size: 200px;
     color: aquamarine;
@@ -19,7 +18,6 @@
     width: 100%;
     background-color: silver;
     font-size: 80%;
-    /* rajouté par baobab : les deux cases étaient opposées ?? */
     display: inline-block;
 }
 .overlay:hover{
@@ -32,7 +30,6 @@
 }
 
 .button {
-
     border-color:white;
     color: white;
     padding: 15px 32px;

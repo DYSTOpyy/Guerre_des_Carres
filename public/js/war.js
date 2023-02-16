@@ -24,16 +24,13 @@ function submit(id, bgcolor) {
 }
 
 socket.on("newConnection", () => {
-  console.log("connecte");
   for (item of document.getElementsByClassName("square")) {
-    console.log(colors[0]);
     item.style.backgroundColor = colors[0];
     item.style.borderColor = colors[0];
   }
 });
 
 socket.on("G_update", (name, Ncolor) => {
-  console.log("recu !");
   document.getElementById(name).style.backgroundColor = Ncolor;
   document.getElementById(name).color = Ncolor;
 });
@@ -45,7 +42,6 @@ function changing(square) {
 function hoho(obet) {
   // obetenir l'attribut classe de l'objet, récupérer sa couleur dans le css, et l'envoyer en socket pour modifier la case
   test = document.getElementById(obet);
-  //console.log(test);
   chosen_color = window.getComputedStyle(test).backgroundColor;
   socket.emit("checkedTrue", chosen_color);
 }
@@ -77,11 +73,8 @@ colors.forEach((item, index) => {
 var lastSelected = document.getElementById("button_white");
 function border(obj) {
   ancien = lastSelected;
-  console.log(ancien);
   ancien.style.borderColor = "white";
-  //nouveau = document.getElementById(obj);
   obj.style.borderColor = "black";
-
   lastSelected = obj;
 }
 

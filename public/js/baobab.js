@@ -5,7 +5,6 @@ let currentDiv;
 
 function border(obj) {
   ancien = lastSelected;
-  console.log(ancien);
   couleur = ancien.style.backgroundColor;
   ancien.style.borderColor = couleur;
   obj.style.borderColor = "black";
