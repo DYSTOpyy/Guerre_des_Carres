@@ -1,0 +1,44 @@
+.square {
+    height: 50px;
+    width: 50px;
+    background-color: none;
+    display: inline-block;
+}
+.head {
+    text-align: center;
+    font-family: fantasy;
+    /* rajouté par baobab : enlève la marge dessous */
+    margin: 0px;
+    font-size: 200px;
+    color: aquamarine;
+}
+.overlay{
+    opacity: 0;
+    transition: .2s ease;
+    height: 100%;
+    width: 100%;
+    background-color: silver;
+    font-size: 80%;
+    /* rajouté par baobab : les deux cases étaient opposées ?? */
+    display: inline-block;
+}
+.overlay:hover{
+    opacity:1;
+}
+.row{
+    background-color: none;
+    height: 50px;
+    width: 500px;
+}
+
+.button {
+
+    border-color:white;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}

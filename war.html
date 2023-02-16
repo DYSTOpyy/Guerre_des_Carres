@@ -1,114 +1,20 @@
 <head>
-    <title>Guerre des Carrés</title>
-    <meta charset="utf-8">
-    <style>
-        .square {
-            height: 50px;
-            width: 50px;
-            background-color: none;
-            display: inline-block;
-        }
-        .head {
-            text-align: center;
-            font-family: fantasy;
-            font-size: 200px;
-            color: aquamarine;
-        }
-        .overlay{
-            opacity: 0;
-            transition: .2s ease;
-            height: 100%;
-            width: 100%;
-            background-color: silver;
-            font-size: 80%;
-        }
-        .overlay:hover{
-            opacity:1;
-        }
-        .row{
-            background-color: none;
-            height: 50px;
-            width: 500px;
-        }
-    </style>
-    <script>
-
-    </script>
+  <title>Guerre des Carrés</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="/css/styleWar.css" />
 </head>
 <body>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        var socket = io();
-        
-        var colors = [ 'white', 'gray', 'silver', 'maroon', 'red', 'purple', 'green', 'lime', 'olive', 'yellow', 'navy', 'blue', 'teal', 'aqua','black']
-        
-        function submit(id,bgcolor){
-            socket.emit('update',id,bgcolor)
-        }
-        socket.on('newConnection',() =>{
-            console.log('connecte');
-            for (item of document.getElementsByClassName("square")) {
-                console.log(colors[0])
-                item.style.backgroundColor=colors[0];
-                item.style.borderColor=colors[0];
-            }
-        })
-        socket.on('G_update',(name,Ncolor) =>{
-            console.log('recu !');
-            document.getElementById(name).style.backgroundColor=Ncolor;
-            document.getElementById(name).color=Ncolor;
-            })
-        
-        
-        function changing(square) {
-            color=colors.indexOf(square.style.backgroundColor);
-            color=color+1;
-            if(color===15){
-                color=0
-            }
-            submit(square.id,colors[color])
-        }
-        
-    </script>
-    <script>
-    for (let pas = 0; pas < 10; pas++) {
- 
-        newDiv = document.createElement("div");
-        newDiv.classList.add('row');
-
-        for (let pas2 = 0; pas2 < 10; pas2++) {
-
-            let carre = document.createElement("div");
-            carre.id = pas+","+pas2;
-            carre.classList.add('square');
-            carre.onclick = function () {changing(this);};
-                // let overlay = document.createElement("div");
-                // overlay.classList.add('overlay');
-                // overlay.onmouseover = function () {showing(this.parentElement,this)};
-                // carre.appendChild(overlay);
-            newDiv.appendChild(carre);
-
-        }
-
-        document.body.appendChild(newDiv);
-
-    }
-
-    function showing(parent,element){
-            texttoshow=parent.style.backgroundColor
-            element.innerHTML = texttoshow;
-    }
-    </script>
-    <div>
-        <h1 class="head">
-            Bienvenue
-        </h1>
-        <div class="square" onclick="changing(this)" id="0,0">
-            <div class="overlay" onmouseover="showing(this.parentElement,this)"></div>
-        </div>
-        <div class="square" onclick="changing(this)" id="1,0">
-            <div class="overlay" onmouseover="showing(this.parentElement,this)"></div>
-        </div>
-        <div id="info"></div>
+  <h1 class="head">Bienvenue</h1>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="/js/war.js"></script>
+  
+  <div>
+    <div class="square" onclick="changing(this)" id="0,0">
+      <div class="overlay" onmouseover="showing(this.parentElement,this)"></div>
     </div>
+    <div class="square" onclick="changing(this)" id="1,0">
+      <div class="overlay" onmouseover="showing(this.parentElement,this)"></div>
+    </div>
+    <div id="info"></div>
+  </div>
 </body>

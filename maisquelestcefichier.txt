@@ -1,0 +1,31 @@
+PINCEAU FAIT et code 100% clean, proche de la v1 
+
+0. Regarde mes modifs dans le css avant, dans le html aussi
+
+0.0.1 enlever tous les consoles.log (ou les mettre en commentaire)
+
+0.1. Sortir les scripts des html et les mettre dans le dossier js (ce qui implique changer les liens vers les fichiers aussi)
+--------- FAIT mais le script est visible depuis le lien ducoup, y a pas moyen de le rendre privé ? :(
+
+1. SORTIR LA V1 beta alpha
+
+2. Séparer en deux groupes
+branch OVERLAY :    Maxime s'occupe d'une solution technique pour afficher l'overlay
+branch COOKIE :     Baptiste s'occupe de donner un id unique/cookie/nom etc à chaque user qui arrive et qui reste dans le temps
+
+===> tout ça pour créer un système pour afficher les new modif aux joueurs qui arrivent
+
+(mais j'ai peur qu'on ait encore besoin l'un de l'autre ?
+ex : une fois que j'aurais trouver comment faire les users, maxime devra aller chercher là dedans pour pouvoir le montrer sur son overlay
+donc il a besoin de savoir comment je vais lui donner les users à l'avance ??)
+
+3. BIEN COMMENTER
+Si jamais on doit se relire chacun
+
+4. Trouver un moyen d'écrire trql
+Parce que écrire les maj dans le readme c'est pas opti + moche + ratio (utiliser les appli qu'on peut voir dans notion...?)
+Et les commit c'est bien mais c'est un peu petit en mode on doit résumer sur une ligne nos modifs
+et même ce fichier jetable c'est pas ouf mdr
+
+
+

@@ -60,4 +60,10 @@ Mise à jour 0.3
     - dossier JS
     - les 2 pages
 
-    
+=====================
+Mise à jour 0.4
+
+- Faire le pinceau
+
+note : j'ai changé les socket = io(http://localhost) de ma page baobab.html parce que le socket se déconnectait en changeant de page ? comme si il en recréait un
+donc j'ai remplacé par socket = io() comme sur war.html
