@@ -6,6 +6,11 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const path = require("path");
 const dir = path.resolve(__dirname);
+// Pour modifier la taille de la zone de jeu
+const nbCol = 15; 
+const nbLig = 15; 
+// Tableau stockage couleur initialisé en balnc
+var tab = new Array(nbCol*nbLig).fill('white'); 
 process.setMaxListeners(0); //askip c'est pas bien mais osef
 
 // inclure le dossier public !! pour tout ce qui est static (css, image) NOTE : il y a pas le '/' à la fin de public, il faut donc le mettre au début de tous les liens (ex : href="/css/styleBaobab.css")
@@ -23,7 +28,7 @@ app.get("/baobab", (req, res) => {
 // socket.io
 io.on("connection", (socket) => {
   console.log("a user connected");
-  socket.emit("newConnection");
+  socket.emit("newConnection",nbCol,nbLig,tab);
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
@@ -32,6 +37,7 @@ io.on("connection", (socket) => {
   // war.html         MAJ de l'état d'un pixel
   socket.on("update", (id, color) => {
     console.log("Le carre " + id + " est " + color);
+    tab[id]=color;
     console.log("Requete envoye");
     io.emit("G_update", id, color);
   });

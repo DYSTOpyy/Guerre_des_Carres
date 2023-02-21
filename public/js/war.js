@@ -24,16 +24,16 @@ function submit(id, bgcolor) {
   socket.emit("update", id, bgcolor);
 }
 
-socket.on("newConnection", () => {
-  for (item of document.getElementsByClassName("square")) {
-    item.style.backgroundColor = colors[0];
-    item.style.borderColor = colors[0];
+// Apparition nouveau joueur et recuperation infos 
+socket.on("newConnection", (nbCol,nbLig,tab) => {
+  creation(nbCol,nbLig);
+  for (let indice = 0; indice < nbCol*nbLig; indice++){
+    document.getElementById(indice).style.backgroundColor = tab[indice];
   }
 });
 
 socket.on("G_update", (name, Ncolor) => {
   document.getElementById(name).style.backgroundColor = Ncolor;
-  document.getElementById(name).color = Ncolor;
 });
 
 // action lorque que le joueur clique sur une case
@@ -87,23 +87,25 @@ function border(obj) {
 }
 
 // créer les pixels
-play = document.createElement("div");
-play.classList.add("playground");
-  for (let pas = 0; pas < 13; pas++) {
-    newDiv = document.createElement("div");
-    newDiv.classList.add("row");
-    for (let pas2 = 0; pas2 < 20; pas2++) {
-      let carre = document.createElement("div");
-      carre.id = pas + "," + pas2;
-      carre.classList.add("square");
-      carre.onclick = function () {
-        clicking(this);
-      };
-      newDiv.appendChild(carre);
+function creation(nbCol,nbLig){
+  play = document.createElement("div");
+  play.classList.add("playground");
+    for (let lig = 0; lig < nbLig; lig++) {
+      newDiv = document.createElement("div");
+      newDiv.classList.add("row");
+      for (let col = 0; col < nbCol; col++) {
+        let carre = document.createElement("div");
+        carre.id =  lig * nbCol + col;
+        carre.classList.add("square");
+        carre.onclick = function () {
+          clicking(this);
+        };
+        newDiv.appendChild(carre);
+      }
+      play.appendChild(newDiv);
     }
-    play.appendChild(newDiv);
-  }
-document.body.appendChild(play);
+  document.body.appendChild(play);
+}
 
 function changeMode(){
   if (mode === "player"){
