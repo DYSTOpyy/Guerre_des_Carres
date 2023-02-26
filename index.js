@@ -8,9 +8,15 @@ const path = require("path");
 const dir = path.resolve(__dirname);
 // Pour modifier la taille de la zone de jeu
 const nbCol = 15; 
-const nbLig = 15; 
-// Tableau stockage couleur initialisé en balnc
-var tab = new Array(nbCol*nbLig).fill('white'); 
+const nbLig = 10; 
+var tab=[]
+// Tableau stockage couleur initialisé en blanc
+for (let i = 0; i < nbLig; i++) {
+  tab[i] = [];
+  for (let j = 0; j < nbCol; j++) {
+    tab[i][j] = 'white';
+  }
+}
 process.setMaxListeners(0); //askip c'est pas bien mais osef
 
 // inclure le dossier public !! pour tout ce qui est static (css, image) NOTE : il y a pas le '/' à la fin de public, il faut donc le mettre au début de tous les liens (ex : href="/css/styleBaobab.css")
@@ -36,9 +42,8 @@ io.on("connection", (socket) => {
 
   // war.html         MAJ de l'état d'un pixel
   socket.on("update", (id, color) => {
-    console.log("Le carre " + id + " est " + color);
-    tab[id]=color;
-    console.log("Requete envoye");
+    let coord = id.split(",")
+    tab[coord[0]][coord[1]]=color
     io.emit("G_update", id, color);
   });
 

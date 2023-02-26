@@ -27,8 +27,10 @@ function submit(id, bgcolor) {
 // Apparition nouveau joueur et recuperation infos 
 socket.on("newConnection", (nbCol,nbLig,tab) => {
   creation(nbCol,nbLig);
-  for (let indice = 0; indice < nbCol*nbLig; indice++){
-    document.getElementById(indice).style.backgroundColor = tab[indice];
+  for (let lig = 0; lig<nbLig;lig++){
+    for (let col = 0;col<nbCol;col++){
+      document.getElementById(lig+','+col).style.backgroundColor = tab[lig][col];
+    }
   }
 });
 
@@ -95,7 +97,7 @@ function creation(nbCol,nbLig){
       newDiv.classList.add("row");
       for (let col = 0; col < nbCol; col++) {
         let carre = document.createElement("div");
-        carre.id =  lig * nbCol + col;
+        carre.id =  lig+','+col;
         carre.classList.add("square");
         carre.onclick = function () {
           clicking(this);
