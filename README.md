@@ -1,5 +1,4 @@
-guerre_des_carres
-===============
+# guerre_des_carres
 
 Pixel War mais avec peu de budget
 
@@ -8,8 +7,8 @@ Tableau de pixels qui contient dans chaque case une classe avec
 - la date
 - la couleur du pixel
 
-===============
-A FAIRE
+---
+## A FAIRE
 
 sauvegarder le nom du gars dans le dico du js, pas dans les cookies car si il le modifie c'est le bordel
 choix de couleurs limités
@@ -24,7 +23,7 @@ ACTUELLEMENT : en sélectionnant une couleur sur le côté, je peut changer la c
 Il faut finir l'interface pour la rendre opérationelle (et donc savoir comment maxime gère ses pixels car moi je me base sur les id des boutons)
 cad choisir le bloc, choisir la couleur et ça la modifie
 
-- trouver une solution pour partager avec les nouveaux arrivants
+1. trouver une solution pour partager avec les nouveaux arrivants
    dès qu'un nouveau arrive on récupère l'état actuel du jeu sur le premier du tableau, puis on fout le nouveau dans le tableau
 
 - stocker l'état du tableau

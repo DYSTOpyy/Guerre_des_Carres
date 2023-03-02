@@ -8,6 +8,11 @@ const path = require("path");
 const dir = path.resolve(__dirname);
 process.setMaxListeners(0); //askip c'est pas bien mais osef
 
+var users = {};
+var nb_users = 0;
+users["login"] = "rnivjedsjcn";
+
+
 // inclure le dossier public !! pour tout ce qui est static (css, image) NOTE : il y a pas le '/' à la fin de public, il faut donc le mettre au début de tous les liens (ex : href="/css/styleBaobab.css")
 app.use(express.static(dir + "/public"));
 
@@ -20,9 +25,16 @@ app.get("/baobab", (req, res) => {
   res.sendFile(dir + "/baobab.html");
 });
 
+app.get("/login", (req, res) => {
+  res.sendFile(dir + "/login.html");
+});
+
 // socket.io
 io.on("connection", (socket) => {
   console.log("a user connected");
+  users[nb_users] = socket.id;
+  nb_users++;
+  console.log(users);
   socket.emit("newConnection");
 
   socket.on("disconnect", () => {
@@ -52,7 +64,7 @@ io.on("connection", (socket) => {
     const clientSocket = io.sockets.sockets.get(clientId);
 
     // afficher l'id du client
-    console.log(clientSocket.id);
+    // console.log(clientSocket.id);
   }
 });
 
