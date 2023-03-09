@@ -6,19 +6,26 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const path = require("path");
 const dir = path.resolve(__dirname);
+var cookieParser = require('cookie-parser');
 process.setMaxListeners(0); //askip c'est pas bien mais osef
+app.use(cookieParser());
 
 var users = {};
-var nb_users = 0;
-users["login"] = "rnivjedsjcn";
-
 
 // inclure le dossier public !! pour tout ce qui est static (css, image) NOTE : il y a pas le '/' à la fin de public, il faut donc le mettre au début de tous les liens (ex : href="/css/styleBaobab.css")
 app.use(express.static(dir + "/public"));
 
 // charger les différentes pages
 app.get("/", (req, res) => {
-  res.sendFile(dir + "/war.html");
+  
+  // si il y a pas de cookie
+  console.log(req.cookies["id"]);
+  if (req.cookies["id"] == undefined || users[req.cookies["id"]]  == null) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
+    res.redirect("/login");
+  // sinon si il en a un
+  } else {
+    res.sendFile(dir + "/war.html");
+  }
 });
 
 app.get("/baobab", (req, res) => {
@@ -32,10 +39,20 @@ app.get("/login", (req, res) => {
 // socket.io
 io.on("connection", (socket) => {
   console.log("a user connected");
-  users[nb_users] = socket.id;
-  nb_users++;
   console.log(users);
   socket.emit("newConnection");
+
+  socket.on("newUser", (username, id) => {
+    // ajouter au tableau
+    users[id] = username;
+  });
+
+  // envoie au client son pseudo
+  socket.on("whoami", (userCookie) => {
+
+    socket.emit("iam", (users[userCookie]));
+
+  });
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
@@ -53,19 +70,6 @@ io.on("connection", (socket) => {
     io.emit("change", data);
   });
 
-  // ---------------------------------------- COOKIE A FAIRE
-  socket.emit("manageCookie");
-
-  //! RECUPERER UN MEC RANDOM POUR LE DONNER A UN NOUVEAU ICI
-  socket.join("users");
-  const clients = io.sockets.adapter.rooms.get("users");
-  for (const clientId of clients) {
-    //this is the socket of each client in the room.
-    const clientSocket = io.sockets.sockets.get(clientId);
-
-    // afficher l'id du client
-    // console.log(clientSocket.id);
-  }
 });
 
 server.listen(3000, () => {

@@ -1,6 +1,7 @@
 var socket = io();
 var chosen_color = "white";
-
+var username;
+let output = document.querySelector(".output");
 var colors = [
   "white",
   "gray",
@@ -18,6 +19,13 @@ var colors = [
   "aqua",
   "black",
 ];
+
+// récupérer l'username associé au cookie et l'afficher
+socket.emit("whoami", getCookie("id"));
+socket.on("iam", (name) => {
+  var username = name;
+  output.innerHTML = "Your username is:" + username;
+});
 
 function submit(id, bgcolor) {
   socket.emit("update", id, bgcolor);
@@ -46,23 +54,6 @@ function hoho(obet) {
   socket.emit("checkedTrue", chosen_color);
 }
 
-// obtenir la valeur d'un cookie
-function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == " ") {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
 // crée les boutons
 newDiv = document.createElement("div");
 colors.forEach((item, index) => {
@@ -76,10 +67,8 @@ colors.forEach((item, index) => {
   };
   newDiv.appendChild(btn);
 });
-
 document.body.appendChild(newDiv);
 
-// à améliorer, voir maxime
 // donne la couleur aux boutons
 colors.forEach((item, index) => {
   let str = "button_" + item;
@@ -120,4 +109,21 @@ for (let pas = 0; pas < 10; pas++) {
 function showing(parent, element) {
   texttoshow = parent.style.backgroundColor;
   element.innerHTML = texttoshow;
+}
+
+// obtenir la valeur d'un cookie
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
 }

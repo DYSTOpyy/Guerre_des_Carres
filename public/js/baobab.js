@@ -76,15 +76,3 @@ socket.on("change", (couleur, idCarreAChanger) => {
     userItem.style.borderColor = couleur;
   });
 });
-
-socket.on("manageCookie", () => {
-  let id = getCookie("id");
-  if (id != "") {
-    setCookie("id", id, 365);
-  } else {
-    id = socket.id;
-    if (id != "" && id != null) {
-      setCookie("id", id, 365);
-    }
-  }
-});
