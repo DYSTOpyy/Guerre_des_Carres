@@ -1,27 +1,31 @@
+body {
+    background: bisque;
+}
+
 .square {
     height: 50px;
     width: 50px;
     background-color: none;
     display: inline-block;
 }
+
 .head {
+    position: fixed, absolute;
+    width: 100%;
     text-align: center;
+    top: 0;
     font-family: fantasy;
-    margin: 0px;
-    font-size: 200px;
-    color: aquamarine;
+    font-size: 102px;
+    color:mediumslateblue;
 }
-/* .overlay{
-    opacity: 0;
-    transition: .2s ease;
-    height: 50px;
-    width: 50px;
-    background-color: silver;
-    display: inline-block;
+
+.btn_div {
+    width: max-content;
+    margin: auto;
+    height: 35px;
+    align-content: center;
 }
-.overlay:hover{
-    opacity:1;
-} */
+
 .row{
     background-color: none;
     height: 50px;
@@ -35,20 +39,23 @@
     text-decoration: none;
     font-size: 16px;
     cursor: pointer;
+    position: center;
 }
 
 .playground {
     border-style: solid;
     border-color: black;
     width: max-content;
+    margin: auto;
 }
 
 #info {
     border-color: black;
     height: 50px;
-    width: 50px;
+    width: 500px;
     text-align: center;
     background-color: silver;
+    margin: auto;
 }
 
 #change {

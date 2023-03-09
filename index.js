@@ -9,6 +9,7 @@ const dir = path.resolve(__dirname);
 // Pour modifier la taille de la zone de jeu
 const nbCol = 15; 
 const nbLig = 10; 
+
 var tab=[]
 // Tableau stockage couleur initialisé en blanc
 for (let i = 0; i < nbLig; i++) {

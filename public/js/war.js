@@ -18,6 +18,8 @@ var colors = [
   "teal",
   "aqua",
   "black",
+  "orange",
+  "pink"
 ];
 
 function submit(id, bgcolor) {
@@ -57,6 +59,7 @@ function hoho(obet) {
 
 // crée les boutons
 newDiv = document.createElement("div");
+newDiv.classList.add("btn_div")
 colors.forEach((item, index) => {
   let btn = document.createElement("button");
   btn.id = "button_" + item;
