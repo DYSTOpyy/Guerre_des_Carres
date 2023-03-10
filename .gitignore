@@ -1,2 +1,3 @@
 # Ignore le dossier node_module (car il contient les dependencies)
 /node_modules
+/git-sim_media
