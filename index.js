@@ -7,6 +7,18 @@ const io = new Server(server);
 const path = require("path");
 const dir = path.resolve(__dirname);
 var cookieParser = require('cookie-parser');
+// Pour modifier la taille de la zone de jeu
+const nbCol = 15; 
+const nbLig = 10; 
+
+var tab=[]
+// Tableau stockage couleur initialisé en blanc
+for (let i = 0; i < nbLig; i++) {
+  tab[i] = [];
+  for (let j = 0; j < nbCol; j++) {
+    tab[i][j] = 'white';
+  }
+}
 process.setMaxListeners(0); //askip c'est pas bien mais osef
 app.use(cookieParser());
 
@@ -46,7 +58,7 @@ app.get("/login", (req, res) => {
 io.on("connection", (socket) => {
   console.log("a user connected");
   console.log(users);
-  socket.emit("newConnection");
+  socket.emit("newConnection",nbCol,nbLig,tab);
 
   socket.on("newUser", (username, id) => {
     // ajouter au tableau
@@ -66,8 +78,8 @@ io.on("connection", (socket) => {
 
   // war.html         MAJ de l'état d'un pixel
   socket.on("update", (id, color) => {
-    console.log("Le carre " + id + " est " + color);
-    console.log("Requete envoye");
+    let coord = id.split(",")
+    tab[coord[0]][coord[1]]=color
     io.emit("G_update", id, color);
   });
 

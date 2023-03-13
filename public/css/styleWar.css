@@ -1,32 +1,34 @@
+body {
+    background: bisque;
+}
+
 .square {
     height: 50px;
     width: 50px;
     background-color: none;
     display: inline-block;
 }
+
 .head {
-    text-align: center;
-    font-family: fantasy;
-    margin: 0px;
-    font-size: 200px;
-    color: aquamarine;
-}
-.overlay{
-    opacity: 0;
-    transition: .2s ease;
-    height: 100%;
+    position: fixed, absolute;
     width: 100%;
-    background-color: silver;
-    font-size: 80%;
-    display: inline-block;
+    text-align: center;
+    top: 0;
+    font-family: fantasy;
+    font-size: 102px;
+    color:mediumslateblue;
 }
-.overlay:hover{
-    opacity:1;
+
+.btn_div {
+    width: max-content;
+    margin: auto;
+    height: 35px;
+    align-content: center;
 }
+
 .row{
     background-color: none;
     height: 50px;
-    width: 500px;
 }
 
 .button {
@@ -35,7 +37,31 @@
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-size: 16px;
     cursor: pointer;
+    position: center;
+}
+
+.playground {
+    border-style: solid;
+    border-color: black;
+    width: max-content;
+    margin: auto;
+}
+
+#info {
+    border-color: black;
+    height: 50px;
+    width: 500px;
+    text-align: center;
+    background-color: silver;
+    margin: auto;
+}
+
+#change {
+    border-color: black;
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    background-color: red;
 }
