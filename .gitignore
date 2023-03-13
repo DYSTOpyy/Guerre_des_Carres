@@ -1,8 +1,3 @@
-<<<<<<< HEAD
 # Ignore le dossier node_module (car il contient les dependencies)
 /node_modules
 /git-sim_media
-=======
-# Les modules sont personnels !
-/node_modules
->>>>>>> 52cb3ff3a93f3bbc82496ab3be357dd7bc3d514c
