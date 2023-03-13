@@ -33,7 +33,13 @@ app.get("/baobab", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  res.sendFile(dir + "/login.html");
+  if (req.cookies["id"] == undefined || users[req.cookies["id"]]  == null) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
+    res.sendFile(dir + "/login.html");
+  // sinon si il en a un
+  } else {
+    res.redirect("/");
+  }
+  
 });
 
 // socket.io
