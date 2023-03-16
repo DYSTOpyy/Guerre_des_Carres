@@ -24,19 +24,16 @@ var colors = [
   "pink"
 ];
 
-// récupérer l'username associé au cookie et l'afficher
-socket.emit("whoami", getCookie("id"));
+socket.emit("whoami", getCookie("id"));     // récupérer l'username associé au cookie et l'afficher
 socket.on("iam", (name) => {
   var username = name;
-  output.innerHTML = "Your username is:" + username;
 });
 
 function submit(id, bgcolor) {
   socket.emit("update", id, bgcolor);
 }
 
-// Apparition nouveau joueur et recuperation infos 
-socket.on("newConnection", (nbCol,nbLig,tab) => {
+socket.on("newConnection", (nbCol,nbLig,tab) => {       // Apparition nouveau joueur et recuperation infos 
   creation(nbCol,nbLig);
   for (let lig = 0; lig<nbLig;lig++){
     for (let col = 0;col<nbCol;col++){
@@ -49,8 +46,7 @@ socket.on("G_update", (name, Ncolor) => {
   document.getElementById(name).style.backgroundColor = Ncolor;
 });
 
-// action lorque que le joueur clique sur une case
-function clicking(square) {
+function clicking(square) {         // action lorque que le joueur clique sur une case selon son mode
   if (mode === "player"){
     submit(square.id, chosen_color);
   }
@@ -59,15 +55,13 @@ function clicking(square) {
   }
 }
 
-function hoho(obet) {
-  // obetenir l'attribut classe de l'objet, récupérer sa couleur dans le css, et l'envoyer en socket pour modifier la case
+function hoho(obet) {         // obtenir l'attribut classe de l'objet, récupérer sa couleur dans le css, et l'envoyer en socket pour modifier la case
   test = document.getElementById(obet);
   chosen_color = test.style.backgroundColor;
   socket.emit("checkedTrue", chosen_color);
 }
 
-// crée les boutons
-newDiv = document.createElement("div");
+newDiv = document.createElement("div");         // créer les boutons
 newDiv.classList.add("btn_div")
 colors.forEach((item, index) => {
   let btn = document.createElement("button");
@@ -82,14 +76,12 @@ colors.forEach((item, index) => {
 });
 document.body.appendChild(newDiv);
 
-// donne la couleur aux boutons
-colors.forEach((item, index) => {
+colors.forEach((item, index) => {         // donne la couleur aux boutons
   let str = "button_" + item;
   document.getElementById(str).style.backgroundColor = item;
 });
 
-// bordure
-var lastSelected = document.getElementById("button_"+chosen_color);
+var lastSelected = document.getElementById("button_"+chosen_color);       // bordure
 lastSelected.style.borderColor ="black";
 function border(obj) {
   ancien = lastSelected;
@@ -98,8 +90,7 @@ function border(obj) {
   lastSelected = obj;
 }
 
-// créer les pixels
-function creation(nbCol,nbLig){
+function creation(nbCol,nbLig){             // créer les pixels
   play = document.createElement("div");
   play.classList.add("playground");
     for (let lig = 0; lig < nbLig; lig++) {
@@ -119,7 +110,7 @@ function creation(nbCol,nbLig){
   document.body.appendChild(play);
 }
 
-function changeMode(){
+function changeMode(){            // changer de mode
   if (mode === "player"){
     mode = "viewer";
     for (item of document.getElementsByClassName("button")) {
@@ -142,23 +133,6 @@ changeMode();
 function showing(element) {
   texttoshow = element.style.backgroundColor;
   document.getElementById("info").innerHTML = texttoshow;
-}
-
-// obtenir la valeur d'un cookie
-function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == " ") {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
 }
 
 // obtenir la valeur d'un cookie

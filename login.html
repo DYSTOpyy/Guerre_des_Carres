@@ -1,26 +1,29 @@
 <!DOCTYPE html>
-<html>
-<head>
-<link rel="icon" href="static/newicon.png">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="/css/styleLogin.css" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
-</head>
-<body>
-    <h2>BIENVENUE SUR</h2>
-    <div id="boite-image">
-        <img src="static/logo.png" id="logo"></img>
-        <figcaption id="caption">©️Midjourney</figcaption>
-    </div>
-<form name="login-form" action="" method="post">
-    <input type="text" name="username" value="" placeholder="Entrez un nom de joueur">
-    <input type="submit" name="submit" class="button" value="Connexion">
-    <p class="error"></p>
-</form>
-</div>
-<script src="/socket.io/socket.io.js"></script>
-<script type="text/javascript" src="/js/login.js"></script>
-</body>
+<html lang="FR">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+        <link rel="icon" href="static/newicon.png">
+        <link rel="stylesheet" type="text/css" href="/css/styleLogin.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <h2>BIENVENUE SUR</h2>
+        <div id="boite-image">
+            <img src="static/logo.png" id="logo"></img>
+            <figcaption id="caption">©️Midjourney</figcaption>
+        </div>
+
+        <form name="login-form" action="" method="post">
+            <input type="text" name="username" value="" placeholder="Entrez un nom de joueur">
+            <input type="submit" name="submit" class="button" value="Connexion">
+            <p class="error"></p>
+        </form>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="/js/login.js"></script>
+
+    </body>
 </html>

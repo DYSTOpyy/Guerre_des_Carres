@@ -6,73 +6,75 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const path = require("path");
 const dir = path.resolve(__dirname);
-var cookieParser = require('cookie-parser');
-// Pour modifier la taille de la zone de jeu
-const nbCol = 15; 
-const nbLig = 10; 
+var cookieParser = require('cookie-parser');        // module des cookies
+app.use(cookieParser());
 
-var tab=[]
-// Tableau stockage couleur initialisé en blanc
-for (let i = 0; i < nbLig; i++) {
+const nbCol = 15;         // Pour modifier la taille de la zone de jeu
+const nbLig = 10; 
+var users = new Map();    // stockage de users
+
+var tab=[]            // Tableau stockage couleur initialisé en blanc
+for (let i = 0; i < nbLig; i++) {       
   tab[i] = [];
   for (let j = 0; j < nbCol; j++) {
     tab[i][j] = 'white';
   }
 }
-process.setMaxListeners(0); //askip c'est pas bien mais osef
-app.use(cookieParser());
 
-var users = {};
+app.use(express.static(dir + "/public"));     // inclure le dossier public !! pour tout ce qui est static (css, image) NOTE : il y a pas le '/' à la fin de public, il faut donc le mettre au début de tous les liens (ex : href="/css/styleBaobab.css")
 
-// inclure le dossier public !! pour tout ce qui est static (css, image) NOTE : il y a pas le '/' à la fin de public, il faut donc le mettre au début de tous les liens (ex : href="/css/styleBaobab.css")
-app.use(express.static(dir + "/public"));
 
-// charger les différentes pages
-app.get("/", (req, res) => {
+app.get("/", (req, res) => {      // page de jeu 
   
-  // si il y a pas de cookie
-  console.log(req.cookies["id"]);
-  if (req.cookies["id"] == undefined || users[req.cookies["id"]]  == null) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
+  // console.log(req.cookies["id"]);
+  if (req.cookies["id"] == undefined || users.get(req.cookies["id"])  == undefined) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
     res.redirect("/login");
-  // sinon si il en a un
-  } else {
+  } else {      // sinon si il en a un
     res.sendFile(dir + "/war.html");
   }
 });
 
-app.get("/baobab", (req, res) => {
+
+app.get("/baobab", (req, res) => {      // page de test
   res.sendFile(dir + "/baobab.html");
 });
 
-app.get("/login", (req, res) => {
-  if (req.cookies["id"] == undefined || users[req.cookies["id"]]  == null) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
+app.get("/login", (req, res) => {     // page de login
+  if (req.cookies["id"] == undefined || users.get(req.cookies["id"])  == undefined) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
     res.sendFile(dir + "/login.html");
-  // sinon si il en a un
-  } else {
+  } else {      // sinon si il en a un
     res.redirect("/");
   }
   
 });
 
-// socket.io
-io.on("connection", (socket) => {
-  console.log("a user connected");
+io.on("connection", (socket) => {     // socket.io
+  // console.log("a user connected");
   console.log(users);
+
   socket.emit("newConnection",nbCol,nbLig,tab);
 
   socket.on("newUser", (username, id) => {
-    // ajouter au tableau
-    users[id] = username;
+    
+    let valide = true;        // test si pseudo déjà existant
+    for (let name of users.values()) {
+      if (name == username) {valide = false;}
+    }
+
+    if (valide) {
+      users.set(id, username);
+      socket.emit("valide");
+    } else {
+      socket.emit("already");
+    }
+    
   });
 
-  // envoie au client son pseudo
-  socket.on("whoami", (userCookie) => {
-
+  socket.on("whoami", (userCookie) => {     // envoie au client son pseudo
     socket.emit("iam", (users[userCookie]));
-
   });
 
-  socket.on("disconnect", () => {
+  socket.on("disconnect", () => {         // on deconnexion
     console.log("user disconnected");
   });
 
@@ -90,6 +92,6 @@ io.on("connection", (socket) => {
 
 });
 
-server.listen(3000, () => {
-  console.log("listening on *:3000");
+server.listen(80, () => {         // lancement du serveur
+  console.log("listening on *:80");
 });
