@@ -1,68 +1,25 @@
 # guerre_des_carres
 
-Pixel War mais avec peu de budget
+*Pixel War mais avec peu de budget*
+
+<img src="https://tryhackme-badges.s3.amazonaws.com/maxlem24.png" alt="TryHackMe">
+<img src="https://tryhackme-badges.s3.amazonaws.com/U2pyy.png" alt="TryHackMe">
+
+## Penses-bête
 
 Tableau de pixels qui contient dans chaque case une classe avec 
-- le nom du gars qui l'a mis
-- la date
-- la couleur du pixel
+- [ ]le nom du gars qui l'a mis
+- [ ]la date
+- [x]la couleur du pixel
 
----
-## A FAIRE
+## Objectif
+**DOMINEZ LE CHAMP DE BATAILLE !**
+Une grille de jeu vierge de toutes couleur est à votre disposition et n'attends que d'être colorée.
+Sélectionez une couleur et dessiner vos plus belles oeuvres d'arts en pixel, seul ou en groupe, afin d'éblouir les autres joueurs.
+Attention, le temps est limité : coordonnez vous afin d'atteindre au mieux votre objectif !
 
-sauvegarder le nom du gars dans le dico du js, pas dans les cookies car si il le modifie c'est le bordel
-choix de couleurs limités
-
-- finir l'interface de choix des couleurs
-
-    - choisir un bloc, choisir la couleur et hop le bloc change OU L'INVERSE 
-
-        - choisir un bloc === mettre son contour ! et enlever le contout de l'ancien !
-
-ACTUELLEMENT : en sélectionnant une couleur sur le côté, je peut changer la couleur du truc blanc.
-Il faut finir l'interface pour la rendre opérationelle (et donc savoir comment maxime gère ses pixels car moi je me base sur les id des boutons)
-cad choisir le bloc, choisir la couleur et ça la modifie
-
-1. trouver une solution pour partager avec les nouveaux arrivants
-   dès qu'un nouveau arrive on récupère l'état actuel du jeu sur le premier du tableau, puis on fout le nouveau dans le tableau
-
-- stocker l'état du tableau
-
-- page d'accueil 
-
-nouveau : donner pseudo + cookie d'auth
-deja vu : rien faire
---> passe au jeux
-
-- cookie de session (sauf si existant)
-    un tableau avec tous les utilisateurs, une file (le premier est le dernier arrivé)
-
-- pseudo
-
-=====================
-Mise a jour 0.2
-
-- Clean le code 
-    - Un seul JS
-        - Le mettre dans un dossier JS
-        - Pouvoir lancer les deux pages .html
-        - Faire un sorte que les deux versions fonctionnent
-    - organiser les css
-
-=====================
-Mise à jour 0.3
-
--La même chose 
-- plus :    
-    -Implementation pinceau
-- moins :
-    - dossier JS
-    - les 2 pages
-
-=====================
-Mise à jour 0.4
-
-- Faire le pinceau
-
-note : j'ai changé les socket = io(http://localhost) de ma page baobab.html parce que le socket se déconnectait en changeant de page ? comme si il en recréait un
-donc j'ai remplacé par socket = io() comme sur war.html
+ ## Comment jouer
+Entrez l'URL du serveur dans votre navigateur sous la forme http://IP_DU_SERVEUR:80 
+Renseignez un pseudo puis connectez vous : le jeu est accessible !
+- **Mode Viewer :** ce mode de jeu vous permet de voir le terrain de jeu en tant que spectateur. Vous pouvez sélectionner un pixel particulier pour voir le pseudo de son créateur ainsi que la date où il a été posé.
+- **Mode Joueur :** là où l'action commence ! Sélectionnez une couleur et cliquez sur n'importe quel pixel de la grille pour y déposer un pixel. Les autres joueurs peuvent le voir et même le modifier.
