@@ -1,7 +1,6 @@
 var socket = io();
 var chosen_color = "white";
 var username;
-let output = document.querySelector(".output");
 var mode ;
 
 var colors = [
@@ -24,43 +23,33 @@ var colors = [
   "pink"
 ];
 
-// récupérer l'username associé au cookie et l'afficher
-socket.emit("whoami", getCookie("id"));
-socket.on("iam", (name) => {
-  var username = name;
-  output.innerHTML = "Your username is:" + username;
-});
 
-function submit(id, bgcolor) {
-  socket.emit("update", id, bgcolor);
-}
-
-// Apparition nouveau joueur et recuperation infos 
-socket.on("newConnection", (nbCol,nbLig,tab) => {
+socket.on("newConnection", (nbCol,nbLig,tab) => { // Apparition nouveau joueur et recuperation infos 
   creation(nbCol,nbLig);
   for (let lig = 0; lig<nbLig;lig++){
     for (let col = 0;col<nbCol;col++){
-      document.getElementById(lig+','+col).style.backgroundColor = tab[lig][col];
+      document.getElementById(lig+','+col).style.backgroundColor = tab[lig][col][0];
     }
   }
 });
 
-socket.on("G_update", (name, Ncolor) => {
+
+socket.on("G_update", (name, Ncolor) => { // Changement de la couleur coté client
   document.getElementById(name).style.backgroundColor = Ncolor;
 });
 
-// action lorque que le joueur clique sur une case
-function clicking(square) {
+
+function clicking(square) { // action lorque que le joueur clique sur une case
   if (mode === "player"){
-    submit(square.id, chosen_color);
+    socket.emit("update", square.id, chosen_color,getCookie("id"));
   }
   else{
-    showing(square);
+    socket.emit("show", square.id);
   }
 }
 
-function hoho(obet) {
-  // obetenir l'attribut classe de l'objet, récupérer sa couleur dans le css, et l'envoyer en socket pour modifier la case
+function hoho(obet) {   // obtenir l'attribut classe de l'objet, récupérer sa couleur dans le css, et l'envoyer en socket pour modifier la case
+
   test = document.getElementById(obet);
   chosen_color = test.style.backgroundColor;
   socket.emit("checkedTrue", chosen_color);
@@ -82,8 +71,8 @@ colors.forEach((item, index) => {
 });
 document.body.appendChild(newDiv);
 
-// donne la couleur aux boutons
-colors.forEach((item, index) => {
+
+colors.forEach((item) => { // donne la couleur aux boutons
   let str = "button_" + item;
   document.getElementById(str).style.backgroundColor = item;
 });
@@ -98,8 +87,8 @@ function border(obj) {
   lastSelected = obj;
 }
 
-// créer les pixels
-function creation(nbCol,nbLig){
+
+function creation(nbCol,nbLig){ // créer les pixels
   play = document.createElement("div");
   play.classList.add("playground");
     for (let lig = 0; lig < nbLig; lig++) {
@@ -119,7 +108,8 @@ function creation(nbCol,nbLig){
   document.body.appendChild(play);
 }
 
-function changeMode(){
+
+function changeMode(){  // Choix mode viewer / joueur
   if (mode === "player"){
     mode = "viewer";
     for (item of document.getElementsByClassName("button")) {
@@ -137,32 +127,22 @@ function changeMode(){
   document.getElementById("change").innerHTML=mode;
 }
 
-changeMode();
+changeMode(); // Pour set le mode player initial
 
+socket.on("content", (color,pseudo) => {  // affichage couleur + pseudo
+  if (pseudo==null){
+    pseudo = "nobody"
+  }
+  texttoshow = color +" set by "+pseudo
+  document.getElementById("info").innerHTML = texttoshow;
+});
 function showing(element) {
   texttoshow = element.style.backgroundColor;
   document.getElementById("info").innerHTML = texttoshow;
 }
 
-// obtenir la valeur d'un cookie
-function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == " ") {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
 
-// obtenir la valeur d'un cookie
-function getCookie(cname) {
+function getCookie(cname) { // obtenir la valeur d'un cookie
   let name = cname + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
   let ca = decodedCookie.split(";");

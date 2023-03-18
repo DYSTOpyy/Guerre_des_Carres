@@ -1,21 +1,28 @@
 var socket = io();
-
-
-    document.forms["login-form"].addEventListener("submit", catchData);
-    function catchData(e){
-        e.preventDefault();
-        let error = document.querySelector(".error");
-        let output = document.querySelector(".output");
-        
-        let username = this.username.value;
+var cookieTime = "86400";               // durée d'un cookie en seconde
  
-        if(username === ""){
-            error.innerHTML = "Wrong username";
-            output.innerHTML = "";
-        }else{
-            error.innerHTML = "";
-            document.cookie = "id="+socket.id+"; expires=Thu, 18 Dec 2023 12:00:00 UTC";
-            socket.emit("newUser", username, socket.id);
-            window.location.href = '/';
-        }
+document.forms["login-form"].addEventListener("submit", catchData);
+function catchData(e){
+    e.preventDefault();
+    let error = document.querySelector(".error");
+    let username = this.username.value;
+ 
+    if(username === ""){
+        error.innerHTML = "T'a pas rentré de pseudo tu crois on t'a pas vu fdp ?";
+        output.innerHTML = "";
+    }else{
+ 
+        document.cookie = "id="+socket.id+"; max-age="+cookieTime;
+        socket.emit("newUser", username, socket.id);            // test si nouvel user est validé
+        
     }
+}
+ 
+socket.on("valide", () => {             // si le pseudo est validé
+    window.location.href = '/';
+})
+
+socket.on("already", () => {            // si le pseudo est déjà utilisé
+    let error = document.querySelector(".error");
+    error.innerHTML = "Ce pseudo est déjà sélectionné, veuillez en choisir un autre.";
+});
