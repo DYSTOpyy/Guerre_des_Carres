@@ -23,6 +23,10 @@ var colors = [
   "pink"
 ];
 
+socket.emit("whoami", getCookie("id"));     // récupérer l'username associé au cookie et l'afficher
+socket.on("iam", (name) => {
+  var username = name;
+});
 
 socket.on("newConnection", (nbCol,nbLig,tab) => { // Apparition nouveau joueur et recuperation infos 
   creation(nbCol,nbLig);
@@ -38,8 +42,7 @@ socket.on("G_update", (name, Ncolor) => { // Changement de la couleur coté clie
   document.getElementById(name).style.backgroundColor = Ncolor;
 });
 
-
-function clicking(square) { // action lorque que le joueur clique sur une case
+function clicking(square) {         // action lorque que le joueur clique sur une case selon son mode
   if (mode === "player"){
     socket.emit("update", square.id, chosen_color,getCookie("id"));
   }
@@ -55,8 +58,7 @@ function hoho(obet) {   // obtenir l'attribut classe de l'objet, récupérer sa 
   socket.emit("checkedTrue", chosen_color);
 }
 
-// crée les boutons
-newDiv = document.createElement("div");
+newDiv = document.createElement("div");         // créer les boutons
 newDiv.classList.add("btn_div")
 colors.forEach((item, index) => {
   let btn = document.createElement("button");
@@ -77,8 +79,7 @@ colors.forEach((item) => { // donne la couleur aux boutons
   document.getElementById(str).style.backgroundColor = item;
 });
 
-// bordure
-var lastSelected = document.getElementById("button_"+chosen_color);
+var lastSelected = document.getElementById("button_"+chosen_color);       // bordure
 lastSelected.style.borderColor ="black";
 function border(obj) {
   ancien = lastSelected;
@@ -87,8 +88,7 @@ function border(obj) {
   lastSelected = obj;
 }
 
-
-function creation(nbCol,nbLig){ // créer les pixels
+function creation(nbCol,nbLig){             // créer les pixels
   play = document.createElement("div");
   play.classList.add("playground");
     for (let lig = 0; lig < nbLig; lig++) {

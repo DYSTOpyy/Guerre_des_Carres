@@ -14,24 +14,18 @@ var users = new Map();    // stockage de users
 const nbCol = 30; 
 const nbLig = 30; 
 
-var tab=[]
-// Tableau stockage couleur initialisé en blanc
-for (let i = 0; i < nbLig; i++) {
+var tab=[]            // Tableau stockage couleur initialisé en blanc
+for (let i = 0; i < nbLig; i++) {       
   tab[i] = [];
   for (let j = 0; j < nbCol; j++) {
     tab[i][j] = ['white',null];
   }
 }
-process.setMaxListeners(0); //askip c'est pas bien mais osef
-app.use(cookieParser());
 
 app.use(express.static(dir + "/public"));     // inclure le dossier public !! pour tout ce qui est static (css, image) NOTE : il y a pas le '/' à la fin de public, il faut donc le mettre au début de tous les liens (ex : href="/css/styleBaobab.css")
 
-// inclure le dossier public !! pour tout ce qui est static (css, image) NOTE : il y a pas le '/' à la fin de public, il faut donc le mettre au début de tous les liens (ex : href="/css/styleBaobab.css")
-app.use(express.static(dir + "/public"));
 
-// charger les différentes pages
-app.get("/", (req, res) => {
+app.get("/", (req, res) => {      // page de jeu 
   
   // si il y a pas de cookie
   console.log(req.cookies["id"]);
@@ -43,24 +37,24 @@ app.get("/", (req, res) => {
   }
 });
 
-app.get("/baobab", (req, res) => {
+
+app.get("/baobab", (req, res) => {      // page de test
   res.sendFile(dir + "/baobab.html");
 });
 
 app.get("/login", (req, res) => {     // page de login
   if (req.cookies["id"] == undefined || users.get(req.cookies["id"])  == undefined) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
     res.sendFile(dir + "/login.html");
-  // sinon si il en a un
-  } else {
+  } else {      // sinon si il en a un
     res.redirect("/");
   }
   
 });
 
-// socket.io
-io.on("connection", (socket) => {
-  console.log("a user connected");
+io.on("connection", (socket) => {     // socket.io
+  // console.log("a user connected");
   console.log(users);
+
   socket.emit("newConnection",nbCol,nbLig,tab);
 
   socket.on("newUser", (username, id) => {
@@ -78,14 +72,11 @@ io.on("connection", (socket) => {
     
   });
 
-  // envoie au client son pseudo
-  socket.on("whoami", (userCookie) => {
-
+  socket.on("whoami", (userCookie) => {     // envoie au client son pseudo
     socket.emit("iam", (users[userCookie]));
-
   });
 
-  socket.on("disconnect", () => {
+  socket.on("disconnect", () => {         // on deconnexion
     console.log("user disconnected");
   });
 
@@ -111,6 +102,6 @@ io.on("connection", (socket) => {
 
 });
 
-server.listen(80, () => {
+server.listen(80, () => {         // lancement du serveur
   console.log("listening on *:80");
 });
