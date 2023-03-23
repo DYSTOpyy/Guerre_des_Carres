@@ -22,13 +22,14 @@ for (let i = 0; i < nbLig; i++) {
   }
 }
 
+app.use(cookieParser());
 app.use(express.static(dir + "/public"));     // inclure le dossier public !! pour tout ce qui est static (css, image) NOTE : il y a pas le '/' à la fin de public, il faut donc le mettre au début de tous les liens (ex : href="/css/styleBaobab.css")
 
 
 app.get("/", (req, res) => {      // page de jeu 
   
   // si il y a pas de cookie
-  console.log(req.cookies["id"]);
+  
   if (req.cookies["id"] == undefined || users.get(req.cookies["id"])  == undefined) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
       res.redirect("/login");
   
