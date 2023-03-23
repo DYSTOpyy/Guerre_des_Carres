@@ -11,7 +11,7 @@ function catchData(e){
         error.innerHTML = "T'a pas rentré de pseudo tu crois on t'a pas vu fdp ?";
         output.innerHTML = "";
     }else{
- 
+        console.log("hjke,adzlv b");
         document.cookie = "id="+socket.id+"; max-age="+cookieTime;
         socket.emit("newUser", username, socket.id);            // test si nouvel user est validé
         
