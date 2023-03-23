@@ -37,6 +37,7 @@ socket.on("newConnection", (nbCol,nbLig,tab) => { // Apparition nouveau joueur e
   }
 });
 
+document.getElementById("change").addEventListener("click",changeMode)
 
 socket.on("G_update", (name, Ncolor) => { // Changement de la couleur coté client
   document.getElementById(name).style.backgroundColor = Ncolor;
@@ -65,10 +66,10 @@ colors.forEach((item, index) => {
   btn.id = "button_" + item;
   btn.classList.add("button");
   btn.style.backgroundColor = item;
-  btn.onclick = function () {
+  btn.addEventListener("click", function () {
     hoho(this.id);
     border(this);
-  };
+  });
   newDiv.appendChild(btn);
 });
 document.body.appendChild(newDiv);
@@ -98,9 +99,9 @@ function creation(nbCol,nbLig){             // créer les pixels
         let carre = document.createElement("div");
         carre.id =  lig+','+col;
         carre.classList.add("square");
-        carre.onclick = function () {
+        carre.addEventListener("click",function () {
           clicking(this);
-        };
+        });
         newDiv.appendChild(carre);
       }
       play.appendChild(newDiv);
