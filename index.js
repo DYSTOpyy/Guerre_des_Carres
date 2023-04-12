@@ -10,22 +10,23 @@ var cookieParser = require('cookie-parser');
 
 var users = new Map();    // stockage de users
 
-const Fcolors = new Map(["white","blanche"],
-["gray","grise"],
-["silver","argentée"],
+const Fcolors = new Map([["white","blanc"],
+["gray","gris"],
+["silver","argenté"],
 ["maroon","marron"],
-["red"],["purple"],
-["green"],
-["lime"],
-["olive"],
-["yellow"],
-["navy"],
-["blue"],[
-"teal"],[
-"aqua"],[
-"black"],[
-"orange"],[
-"pink"])
+["red","rouge"],
+["purple","violet"],
+["green","vert"],
+["lime","vert clair"],
+["olive","olive"],
+["yellow","jaune"],
+["navy","bleu marine"],
+["blue","bleu"],
+["teal","bleu canard"],
+["aqua","cyan"],
+["black","noir"],
+["orange","orange"],
+["pink","rose"]])
 // Pour modifier la taille de la zone de jeu
 const nbCol = 30; 
 const nbLig = 30; 
@@ -114,7 +115,8 @@ io.on("connection", (socket) => {     // socket.io
     color=tab[coord[0]][coord[1]][0]
     pseudo=tab[coord[0]][coord[1]][1]
     date=tab[coord[0]][coord[1]][2]
-    socket.emit("content",color,pseudo,date)
+    colorF=Fcolors.get(color);
+    socket.emit("content",colorF,pseudo,date)
   })
 
   // baobab.html      changer tous les blocs de couleur

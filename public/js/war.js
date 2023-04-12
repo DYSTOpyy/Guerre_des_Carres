@@ -134,7 +134,7 @@ socket.on("content", (color,pseudo,date) => {  // affichage couleur + pseudo
   if (pseudo==null){
     pseudo = "default"
   }
-  texttoshow ="Ce pixel de couleur"+ color +" a été dessiné par "+pseudo;
+  texttoshow ="Ce pixel "+ color +" a été dessiné par "+pseudo;
   if (date!=null){
     texttoshow += " le "+date;
   }
