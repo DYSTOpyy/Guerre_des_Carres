@@ -10,15 +10,33 @@ var cookieParser = require('cookie-parser');
 
 var users = new Map();    // stockage de users
 
+const Fcolors = new Map(["white","blanche"],
+["gray","grise"],
+["silver","argentée"],
+["maroon","marron"],
+["red"],["purple"],
+["green"],
+["lime"],
+["olive"],
+["yellow"],
+["navy"],
+["blue"],[
+"teal"],[
+"aqua"],[
+"black"],[
+"orange"],[
+"pink"])
 // Pour modifier la taille de la zone de jeu
 const nbCol = 30; 
 const nbLig = 30; 
+
+const  mois = ['janvier','fevrier','mars','avril','mai','juin','juillet','aout','septembre','octobre','novembre','decembre'];
 
 var tab=[]            // Tableau stockage couleur initialisé en blanc
 for (let i = 0; i < nbLig; i++) {       
   tab[i] = [];
   for (let j = 0; j < nbCol; j++) {
-    tab[i][j] = ['white',null];
+    tab[i][j] = ['white',null,null];
   }
 }
 
@@ -83,9 +101,11 @@ io.on("connection", (socket) => {     // socket.io
 
   // war.html         MAJ de l'état d'un pixel
   socket.on("update", (id, color,userCookie) => {
-    let coord = id.split(",")
-    tab[coord[0]][coord[1]][0]=color
-    tab[coord[0]][coord[1]][1]=users.get(userCookie)
+    let coord = id.split(",");
+    tab[coord[0]][coord[1]][0]=color;
+    tab[coord[0]][coord[1]][1]=users.get(userCookie);
+    var time=new Date()
+    tab[coord[0]][coord[1]][2]= time.getDate()+" "+mois[time.getMonth()]+" "+time.getFullYear()+" a "+time.getHours()+"h"+time.getMinutes();
     io.emit("G_update", id, color);
   });
 
@@ -93,7 +113,8 @@ io.on("connection", (socket) => {     // socket.io
     let coord = id.split(",")
     color=tab[coord[0]][coord[1]][0]
     pseudo=tab[coord[0]][coord[1]][1]
-    socket.emit("content",color,pseudo)
+    date=tab[coord[0]][coord[1]][2]
+    socket.emit("content",color,pseudo,date)
   })
 
   // baobab.html      changer tous les blocs de couleur

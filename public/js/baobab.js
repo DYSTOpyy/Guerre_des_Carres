@@ -20,10 +20,9 @@ for (let pas = 0; pas < 10; pas++) {
     let btn = document.createElement("button");
     btn.id = "button_" + pas + "_" + pas2;
     btn.classList.add("button_white");
-
-    btn.onclick = function () {
+    btn.addEventListener("click", function () {
       border(this);
-    };
+    });
 
     newDiv.appendChild(btn);
   }

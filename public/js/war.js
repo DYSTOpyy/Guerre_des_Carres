@@ -130,11 +130,14 @@ function changeMode(){  // Choix mode viewer / joueur
 
 changeMode(); // Pour set le mode player initial
 
-socket.on("content", (color,pseudo) => {  // affichage couleur + pseudo
+socket.on("content", (color,pseudo,date) => {  // affichage couleur + pseudo
   if (pseudo==null){
-    pseudo = "nobody"
+    pseudo = "default"
   }
-  texttoshow = color +" set by "+pseudo
+  texttoshow ="Ce pixel de couleur"+ color +" a été dessiné par "+pseudo;
+  if (date!=null){
+    texttoshow += " le "+date;
+  }
   document.getElementById("info").innerHTML = texttoshow;
 });
 function showing(element) {
