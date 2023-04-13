@@ -1,26 +1,17 @@
 var socket = io();
 var chosen_color = "white";
 var username;
-var mode ;
+var mode;
 
 var colors = [
-  "white",
-  "gray",
-  "silver",
-  "maroon",
-  "red",
-  "purple",
-  "green",
-  "lime",
-  "olive",
-  "yellow",
-  "navy",
-  "blue",
-  "teal",
-  "aqua",
-  "black",
-  "orange",
-  "pink"
+	"maroon","brown",
+	"teal","navy",
+	"red","orange",
+	"yellow","lime",
+	"green","cyan",
+	"blue","purple",
+	"magenta","gray",
+	"white","black"
 ];
 
 socket.emit("whoami", getCookie("id"));     // récupérer l'username associé au cookie et l'afficher
@@ -37,8 +28,6 @@ socket.on("newConnection", (nbCol,nbLig,tab) => { // Apparition nouveau joueur e
   }
 });
 
-document.getElementById("change").addEventListener("click",changeMode)
-
 socket.on("G_update", (name, Ncolor) => { // Changement de la couleur coté client
   document.getElementById(name).style.backgroundColor = Ncolor;
 });
@@ -53,27 +42,25 @@ function clicking(square) {         // action lorque que le joueur clique sur un
 }
 
 function hoho(obet) {   // obtenir l'attribut classe de l'objet, récupérer sa couleur dans le css, et l'envoyer en socket pour modifier la case
-
   test = document.getElementById(obet);
   chosen_color = test.style.backgroundColor;
-  socket.emit("checkedTrue", chosen_color);
 }
 
-newDiv = document.createElement("div");         // créer les boutons
-newDiv.classList.add("btn_div")
-colors.forEach((item, index) => {
-  let btn = document.createElement("button");
-  btn.id = "button_" + item;
-  btn.classList.add("button");
-  btn.style.backgroundColor = item;
-  btn.addEventListener("click", function () {
-    hoho(this.id);
-    border(this);
-  });
-  newDiv.appendChild(btn);
-});
-document.body.appendChild(newDiv);
-
+function buttons (){
+	newDiv = document.createElement("div");         // créer les boutons
+	newDiv.id = "btn_div";
+	colors.forEach((item, index) => {
+		btn = document.createElement("button");
+		btn.id = "button_" + item;
+		btn.classList.add("button");
+		btn.style.backgroundColor = item;
+		btn.addEventListener("click", function () {
+			hoho(this.id);
+			border(this);
+		});
+		newDiv.appendChild(btn);
+	});
+	document.getElementById("sidebar").appendChild(newDiv);}
 
 colors.forEach((item) => { // donne la couleur aux boutons
   let str = "button_" + item;
@@ -89,61 +76,94 @@ function border(obj) {
   lastSelected = obj;
 }
 
+function toggle(){
+	newDiv = document.createElement("div");
+	newDiv.id= "toggle"
+	cible=document.createElement("lord-icon");
+	cible.src="https://cdn.lordicon.com/iltqorsz.json";
+	cible.trigger="hover"
+    cible.colors="primary:#000000,secondary:#f57425"
+    cible.stroke="90"
+    cible.state="hover-2"
+    cible.style="width:70px;height:70px"
+	cible.addEventListener("click",function(){
+		document.getElementById("info").style.display="none";
+    	for (item of document.getElementsByClassName("button")) {
+			item.style.opacity =1;
+		}
+		mode = "player"
+	})
+	newDiv.appendChild(cible);
+	eye=document.createElement("lord-icon");
+	eye.src="https://cdn.lordicon.com/tyounuzx.json"
+    eye.trigger="hover"
+    eye.colors="primary:#121331,secondary:#f57425"
+    eye.stroke="90"
+    eye.style="width:70px;height:70px"
+	eye.addEventListener("click",function (){
+		for (item of document.getElementsByClassName("button")) {
+			item.style.opacity = 0.1;
+		}
+    	document.getElementById("info").style.display="block";
+		mode = "viewer"
+	})
+	newDiv.appendChild(eye);
+	document.getElementById("sidebar").appendChild(newDiv);
+}
+
+function info(){
+	newDiv = document.createElement("div");
+	newDiv.id="info";
+	para=document.createElement("p")
+	para.innerHTML="";
+	newDiv.appendChild(para);
+	document.getElementById("sidebar").appendChild(newDiv);
+}
+
 function creation(nbCol,nbLig){             // créer les pixels
-  play = document.createElement("div");
-  play.classList.add("playground");
+	mode = "player";
+	main = document.createElement("div");
+	main.id="main";
+  	play = document.createElement("div");
+  	play.classList.add("playground");
     for (let lig = 0; lig < nbLig; lig++) {
-      newDiv = document.createElement("div");
-      newDiv.classList.add("row");
-      for (let col = 0; col < nbCol; col++) {
-        let carre = document.createElement("div");
-        carre.id =  lig+','+col;
-        carre.classList.add("square");
-        carre.addEventListener("click",function () {
-          clicking(this);
-        });
-        newDiv.appendChild(carre);
-      }
-      play.appendChild(newDiv);
+      	newDiv = document.createElement("div");
+      	newDiv.classList.add("row");
+      	for (let col = 0; col < nbCol; col++) {
+			let carre = document.createElement("div");
+			carre.id =  lig+','+col;
+			carre.classList.add("square");
+			carre.addEventListener("click",function () {
+				clicking(this);
+				console.log(mode)
+			});
+			newDiv.appendChild(carre);
+      	}
+      	play.appendChild(newDiv);
     }
-  document.body.appendChild(play);
+  	main.appendChild(play);
+	document.getElementById("content").appendChild(main);
+  	sidebar = document.createElement("div");
+  	sidebar.id="sidebar";
+	document.getElementById("content").appendChild(sidebar);
+	toggle();
+	buttons();
+	info();
 }
 
 
-function changeMode(){  // Choix mode viewer / joueur
-  if (mode === "player"){
-    mode = "viewer";
-    for (item of document.getElementsByClassName("button")) {
-      item.style.display ="none";
-    }
-    document.getElementById("info").style.display="block"
-  }
-  else{
-    mode = "player";
-    document.getElementById("info").style.display="none"
-    for (item of document.getElementsByClassName("button")) {
-      item.style.display ="inline-block";
-    }
-  }
-  document.getElementById("change").innerHTML=mode;
-}
-
-changeMode(); // Pour set le mode player initial
 
 socket.on("content", (color,pseudo,date) => {  // affichage couleur + pseudo
-  if (pseudo==null){
-    pseudo = "default"
-  }
-  texttoshow ="Ce pixel "+ color +" a été dessiné par "+pseudo;
-  if (date!=null){
-    texttoshow += " le "+date;
-  }
-  document.getElementById("info").innerHTML = texttoshow;
+  	console.log("marche");
+	if (pseudo==null){
+    	pseudo = "default";
+  	}
+	texttoshow ="Ce pixel "+ color +" a été dessiné par "+pseudo;
+	if (date!=null){
+		texttoshow += " le "+date;
+	}
+	document.getElementById("info").innerHTML = texttoshow;
 });
-function showing(element) {
-  texttoshow = element.style.backgroundColor;
-  document.getElementById("info").innerHTML = texttoshow;
-}
 
 
 function getCookie(cname) { // obtenir la valeur d'un cookie

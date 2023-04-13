@@ -12,21 +12,20 @@ var users = new Map();    // stockage de users
 
 const Fcolors = new Map([["white","blanc"],
 ["gray","gris"],
-["silver","argenté"],
-["maroon","marron"],
+["brown","marron"],
+["maroon","rouge bordeaux"],
 ["red","rouge"],
 ["purple","violet"],
 ["green","vert"],
 ["lime","vert clair"],
-["olive","olive"],
 ["yellow","jaune"],
 ["navy","bleu marine"],
 ["blue","bleu"],
 ["teal","bleu canard"],
-["aqua","cyan"],
+["cyan","cyan"],
 ["black","noir"],
 ["orange","orange"],
-["pink","rose"]])
+["magenta","magenta"]])
 // Pour modifier la taille de la zone de jeu
 const nbCol = 30; 
 const nbLig = 30; 
@@ -37,7 +36,7 @@ var tab=[]            // Tableau stockage couleur initialisé en blanc
 for (let i = 0; i < nbLig; i++) {       
   tab[i] = [];
   for (let j = 0; j < nbCol; j++) {
-    tab[i][j] = ['white',null,null];
+    tab[i][j] = ["white",null,null];
   }
 }
 
@@ -111,18 +110,14 @@ io.on("connection", (socket) => {     // socket.io
   });
 
   socket.on("show",(id)=>{
-    let coord = id.split(",")
-    color=tab[coord[0]][coord[1]][0]
-    pseudo=tab[coord[0]][coord[1]][1]
-    date=tab[coord[0]][coord[1]][2]
+    console.log("recu");
+    let coord = id.split(",");
+    color=tab[coord[0]][coord[1]][0];
+    pseudo=tab[coord[0]][coord[1]][1];
+    date=tab[coord[0]][coord[1]][2];
     colorF=Fcolors.get(color);
-    socket.emit("content",colorF,pseudo,date)
+    socket.emit("content",colorF,pseudo,date);
   })
-
-  // baobab.html      changer tous les blocs de couleur
-  socket.on("checkedTrue", (data, idCarreAChanger) => {
-    io.emit("change", data);
-  });
 
 });
 
