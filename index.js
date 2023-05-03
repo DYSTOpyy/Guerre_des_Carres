@@ -20,7 +20,7 @@ const Fcolors = new Map([
 	["green","vert"],
 	["lime","vert clair"],
 	["yellow","jaune"],
-	["navy","bleu marine"],
+	["teal","bleu canard"],
 	["blue","bleu"],
 	["violet","rose"],
 	["cyan","cyan"],
@@ -96,10 +96,13 @@ io.on("connection", (socket) => {     // socket.io
   	// war.html         MAJ de l'état d'un pixel et stockage dans le tableau cote serveur
 	socket.on("update", (id, color,userCookie) => {
 		let coord = id.split(",");
-		tab[coord[0]][coord[1]][0]=color;
-		tab[coord[0]][coord[1]][1]=users.get(userCookie);
+		var cookie=users.get(userCookie)
+		if (cookie!=null){
+		tab[coord[0]][coord[1]][0]= color;
+		tab[coord[0]][coord[1]][1]= cookie;
 		tab[coord[0]][coord[1]][2]= new Date();
 		io.emit("G_update", id, color);
+		}
 	});
 
   	socket.on("show",(id)=>{
