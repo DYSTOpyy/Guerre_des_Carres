@@ -54,10 +54,6 @@ app.get("/", (req, res) => {      // page de jeu
 });
 
 
-app.get("/baobab", (req, res) => {      // page de test
-  	res.sendFile(dir + "/baobab.html");
-});
-
 app.get("/login", (req, res) => {     // page de login
   	if (req.cookies["id"] == undefined || users.get(req.cookies["id"])  == undefined) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
     	res.sendFile(dir + "/login.html");
