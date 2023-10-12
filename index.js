@@ -68,7 +68,7 @@ io.on("connection", (socket) => {     // socket.io
 
 	socket.on("newUser", (username, id) => {
 		let valide = true;        // test si pseudo déjà existant
-		username = username.match(/[\w]+/)
+		username = username.match(/[\w]+/);
 		for (let name of users.values()) {
 			if (name === username) { valide = false; }
 		}
@@ -102,16 +102,18 @@ io.on("connection", (socket) => {     // socket.io
 	});
 
 	socket.on("show", (id) => {
-		let coord = id.split(",");
-		var color = tab[coord[0]][coord[1]][0];
-		var pseudo = tab[coord[0]][coord[1]][1];
-		var actDate = new Date();
-		var diff = null;
-		if (tab[coord[0]][coord[1]][2] != null) {
-			diff = actDate.getTime() - (tab[coord[0]][coord[1]][2]).getTime();
-		}
-		var colorF = Fcolors.get(color);
-		socket.emit("content", colorF, pseudo, diff);
+		let coord = String(id).split(",");
+		if (coord.length == 2 && coord[0] >= 0 && coord[0] < nbCol && coord[1] >= 0 && coord[1] < nbLig) {
+			var color = tab[coord[0]][coord[1]][0];
+			var pseudo = tab[coord[0]][coord[1]][1];
+			var actDate = new Date();
+			var diff = null;
+			if (tab[coord[0]][coord[1]][2] != null) {
+				diff = actDate.getTime() - (tab[coord[0]][coord[1]][2]).getTime();
+			}
+			var colorF = Fcolors.get(color);
+			socket.emit("content", colorF, pseudo, diff);
+		};
 	});
 
 });
