@@ -11,31 +11,31 @@ var cookieParser = require('cookie-parser');
 var users = new Map();    // stockage de users
 
 const Fcolors = new Map([
-	["white","blanc"],
-	["gray","gris"],
-	["lightgray","gris clair"],
-	["brown","marron"],
-	["red","rouge"],
-	["purple","violet"],
-	["green","vert"],
-	["lime","vert clair"],
-	["yellow","jaune"],
-	["teal","bleu canard"],
-	["blue","bleu"],
-	["violet","rose"],
-	["cyan","cyan"],
-	["black","noir"],
-	["orange","orange"],
-	["magenta","magenta"]])
+	["white", "blanc"],
+	["gray", "gris"],
+	["lightgray", "gris clair"],
+	["brown", "marron"],
+	["red", "rouge"],
+	["purple", "violet"],
+	["green", "vert"],
+	["lime", "vert clair"],
+	["yellow", "jaune"],
+	["teal", "bleu canard"],
+	["blue", "bleu"],
+	["violet", "rose"],
+	["cyan", "cyan"],
+	["black", "noir"],
+	["orange", "orange"],
+	["magenta", "magenta"]])
 // Pour modifier la taille de la zone de jeu
-const nbCol = 30; 
-const nbLig = 30; 
+const nbCol = 30;
+const nbLig = 30;
 
-var tab=[]            // Tableau stockage couleur initialisé en blanc
-for (let i = 0; i < nbLig; i++) {       
+var tab = []            // Tableau stockage couleur initialisé en blanc
+for (let i = 0; i < nbLig; i++) {
 	tab[i] = [];
 	for (let j = 0; j < nbCol; j++) {
-		tab[i][j] = ["white",null,null];
+		tab[i][j] = ["white", null, null];
 	}
 }
 
@@ -44,42 +44,41 @@ app.use(express.static(dir + "/public"));     // inclure le dossier public !! po
 
 
 app.get("/", (req, res) => {      // page de jeu 
-  	// si il y a pas de cookie
- 	if (req.cookies["id"] == undefined || users.get(req.cookies["id"])  == undefined) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
-      	res.redirect("/login");
-  
-  	} else { // sinon si il en a un
-    	res.sendFile(dir + "/war.html");
-  	}
+	// si il y a pas de cookie
+	if (req.cookies["id"] == undefined || users.get(req.cookies["id"]) == undefined) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
+		res.redirect("/login");
+
+	} else { // sinon si il en a un
+		res.sendFile(dir + "/war.html");
+	}
 });
 
 
 app.get("/login", (req, res) => {     // page de login
-  	if (req.cookies["id"] == undefined || users.get(req.cookies["id"])  == undefined) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
-    	res.sendFile(dir + "/login.html");
- 	} else {      // sinon si il en a un
-    	res.redirect("/");
-  	}
-  
+	if (req.cookies["id"] == undefined || users.get(req.cookies["id"]) == undefined) {        // si il y a pas de cookie OU que le cookie n'a pas d'username associé
+		res.sendFile(dir + "/login.html");
+	} else {      // sinon si il en a un
+		res.redirect("/");
+	}
+
 });
 
 io.on("connection", (socket) => {     // socket.io
-  	socket.emit("newConnection",nbCol,nbLig,tab);
+	socket.emit("newConnection", nbCol, nbLig, tab);
 
-  	socket.on("newUser", (username, id) => {
-    let valide = true;        // test si pseudo déjà existant
-    for (let name of users.values()) {
-      	if (name == username) {valide = false;}
-    }
- 
-    if (valide) {
-      	users.set(id, username);
-      	socket.emit("valide");
-    } else {
-      	socket.emit("already");
-    }
-    
-  	});
+	socket.on("newUser", (username, id) => {
+		let valide = true;        // test si pseudo déjà existant
+		for (let name of users.values()) {
+			if (name === username) { valide = false; }
+		}
+
+		if (valide && !users.has(id)) {
+			users.set(id, username);
+			socket.emit("valide");
+		} else {
+			socket.emit("already");
+		}
+	});
 
 	socket.on("whoami", (userCookie) => {     // envoie au client son pseudo
 		socket.emit("iam", (users[userCookie]));
@@ -89,33 +88,33 @@ io.on("connection", (socket) => {     // socket.io
 		console.log("user disconnected");
 	});
 
-  	// war.html         MAJ de l'état d'un pixel et stockage dans le tableau cote serveur
-	socket.on("update", (id, color,userCookie) => {
-		let coord = id.split(",");
-		let cookie=users.get(userCookie)
-		if (cookie!=null && color!=null && coord.length == 2 && coord[0] >=0 && coord[0]< nbCol && coord[1] >=0 && coord[1]< nbLig){
-		tab[coord[0]][coord[1]][0]= color;
-		tab[coord[0]][coord[1]][1]= cookie;
-		tab[coord[0]][coord[1]][2]= new Date();
-		io.emit("G_update", id, color);
+	// war.html         MAJ de l'état d'un pixel et stockage dans le tableau cote serveur
+	socket.on("update", (id, color, userCookie) => {
+		let coord = String(id).split(",");
+		let cookie = users.get(userCookie);
+		if (cookie != null && color != null && Fcolors.has(color) && coord.length == 2 && coord[0] >= 0 && coord[0] < nbCol && coord[1] >= 0 && coord[1] < nbLig) {
+			tab[coord[0]][coord[1]][0] = color;
+			tab[coord[0]][coord[1]][1] = cookie;
+			tab[coord[0]][coord[1]][2] = new Date();
+			io.emit("G_update", id, color);
 		}
 	});
 
-  	socket.on("show",(id)=>{
+	socket.on("show", (id) => {
 		let coord = id.split(",");
-		var color=tab[coord[0]][coord[1]][0];
-		var pseudo=tab[coord[0]][coord[1]][1];
+		var color = tab[coord[0]][coord[1]][0];
+		var pseudo = tab[coord[0]][coord[1]][1];
 		var actDate = new Date();
 		var diff = null;
-		if (tab[coord[0]][coord[1]][2]!=null) {
+		if (tab[coord[0]][coord[1]][2] != null) {
 			diff = actDate.getTime() - (tab[coord[0]][coord[1]][2]).getTime();
 		}
-		var colorF=Fcolors.get(color);
-		socket.emit("content",colorF,pseudo,diff);
+		var colorF = Fcolors.get(color);
+		socket.emit("content", colorF, pseudo, diff);
 	});
 
 });
 
 server.listen(80, () => {         // lancement du serveur
-  	console.log("listening on *:80");
+	console.log("listening on *:80");
 });
