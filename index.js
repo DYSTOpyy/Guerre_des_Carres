@@ -92,8 +92,8 @@ io.on("connection", (socket) => {     // socket.io
   	// war.html         MAJ de l'état d'un pixel et stockage dans le tableau cote serveur
 	socket.on("update", (id, color,userCookie) => {
 		let coord = id.split(",");
-		var cookie=users.get(userCookie)
-		if (cookie!=null){
+		let cookie=users.get(userCookie)
+		if (cookie!=null && color!=null && coord.length == 2 && coord[0] >=0 && coord[0]< nbCol && coord[1] >=0 && coord[1]< nbLig){
 		tab[coord[0]][coord[1]][0]= color;
 		tab[coord[0]][coord[1]][1]= cookie;
 		tab[coord[0]][coord[1]][2]= new Date();
