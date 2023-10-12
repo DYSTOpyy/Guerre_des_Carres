@@ -68,6 +68,7 @@ io.on("connection", (socket) => {     // socket.io
 
 	socket.on("newUser", (username, id) => {
 		let valide = true;        // test si pseudo déjà existant
+		username = username.match(/[\w]+/)
 		for (let name of users.values()) {
 			if (name === username) { valide = false; }
 		}
