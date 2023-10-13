@@ -81,14 +81,6 @@ io.on("connection", (socket) => {     // socket.io
 		}
 	});
 
-	socket.on("whoami", (userCookie) => {     // envoie au client son pseudo
-		socket.emit("iam", (users[userCookie]));
-	});
-
-	socket.on("disconnect", () => {         // on deconnexion
-		console.log("user disconnected");
-	});
-
 	// war.html         MAJ de l'état d'un pixel et stockage dans le tableau cote serveur
 	socket.on("update", (id, color, userCookie) => {
 		let coord = String(id).split(",");
@@ -98,6 +90,7 @@ io.on("connection", (socket) => {     // socket.io
 			tab[coord[0]][coord[1]][1] = cookie;
 			tab[coord[0]][coord[1]][2] = new Date();
 			io.emit("G_update", id, color);
+			setTimeout(() => {  io.emit("wait")}, 500);
 		}
 	});
 
