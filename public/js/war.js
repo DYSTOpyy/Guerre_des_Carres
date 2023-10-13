@@ -2,7 +2,6 @@ var socket = io();
 var chosen_color = 'black';
 var mode;
 var lastSelected;
-var wait = false;
 
 var colors = [
 	'red', 'orange',
@@ -69,14 +68,7 @@ socket.on("wait", () => {
 
 function clicking(square) {         // action lorque que le joueur clique sur une case selon son mode
 	if (mode === "player") {
-		if (!wait) {
-			socket.emit("update", square.id, chosen_color, getCookie("id"));
-			wait = true;
-		}
-		else {
-			alert("Veuillez attendre un peu avant de poser un nouveau carré !")
-		}
-
+		socket.emit("update", square.id, chosen_color, getCookie("id"));
 	}
 	else {
 		socket.emit("show", square.id);

@@ -31,6 +31,8 @@ const Fcolors = new Map([
 const nbCol = 30;
 const nbLig = 30;
 
+const waiting_players = new Array();
+
 var tab = []            // Tableau stockage couleur initialisé en blanc
 for (let i = 0; i < nbLig; i++) {
 	tab[i] = [];
@@ -85,12 +87,18 @@ io.on("connection", (socket) => {     // socket.io
 	socket.on("update", (id, color, userCookie) => {
 		let coord = String(id).split(",");
 		let cookie = users.get(userCookie);
-		if (cookie != null && color != null && Fcolors.has(color) && coord.length == 2 && coord[0] >= 0 && coord[0] < nbCol && coord[1] >= 0 && coord[1] < nbLig) {
+		if (cookie != null && color != null && Fcolors.has(color) && coord.length == 2 && coord[0] >= 0 && coord[0] < nbCol && coord[1] >= 0 && coord[1] < nbLig && !waiting_players.includes(cookie)) {
 			tab[coord[0]][coord[1]][0] = color;
 			tab[coord[0]][coord[1]][1] = cookie;
 			tab[coord[0]][coord[1]][2] = new Date();
+			waiting_players.push(cookie);
 			io.emit("G_update", id, color);
-			setTimeout(() => {  io.emit("wait")}, 500);
+			setTimeout(() => {
+				const index = waiting_players.indexOf(cookie);
+				if (index > -1) {
+					waiting_players.splice(index, 1);
+				}
+			}, 500);
 		}
 	});
 
