@@ -70,7 +70,7 @@ io.on("connection", (socket) => {     // socket.io
 	socket.emit("newConnection", nbCol, nbLig, tab);
 	socket.on("newUser", (username, id) => {
 		let valide = true;        // test si pseudo déjà existant
-		username = username.match(/[\w]+/);
+		username = String(username).match(/[\w]+/);
 		for (let name of users.values()) {
 			if (name === username) { valide = false; }
 		}
