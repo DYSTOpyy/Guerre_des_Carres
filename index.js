@@ -27,11 +27,12 @@ const Fcolors = new Map([
 	["black", "noir"],
 	["orange", "orange"],
 	["magenta", "magenta"]])
+
 // Pour modifier la taille de la zone de jeu
 const nbCol = 30;
 const nbLig = 30;
 
-const waiting_players = new Array();
+const waiting_players = new Map();
 
 var tab = []            // Tableau stockage couleur initialisé en blanc
 for (let i = 0; i < nbLig; i++) {
@@ -67,7 +68,6 @@ app.get("/login", (req, res) => {     // page de login
 
 io.on("connection", (socket) => {     // socket.io
 	socket.emit("newConnection", nbCol, nbLig, tab);
-
 	socket.on("newUser", (username, id) => {
 		let valide = true;        // test si pseudo déjà existant
 		username = username.match(/[\w]+/);
@@ -87,18 +87,16 @@ io.on("connection", (socket) => {     // socket.io
 	socket.on("update", (id, color, userCookie) => {
 		let coord = String(id).split(",");
 		let cookie = users.get(userCookie);
-		if (cookie != null && color != null && Fcolors.has(color) && coord.length == 2 && coord[0] >= 0 && coord[0] < nbCol && coord[1] >= 0 && coord[1] < nbLig && !waiting_players.includes(cookie)) {
-			tab[coord[0]][coord[1]][0] = color;
-			tab[coord[0]][coord[1]][1] = cookie;
-			tab[coord[0]][coord[1]][2] = new Date();
-			waiting_players.push(cookie);
-			io.emit("G_update", id, color);
-			setTimeout(() => {
-				const index = waiting_players.indexOf(cookie);
-				if (index > -1) {
-					waiting_players.splice(index, 1);
-				}
-			}, 500);
+		if (cookie != null && color != null && Fcolors.has(color) && coord.length == 2 && coord[0] >= 0 && coord[0] < nbCol && coord[1] >= 0 && coord[1] < nbLig) {
+			current_time = new Date();
+			if ((waiting_players.has(cookie) && (current_time.getTime() - waiting_players.get(cookie) > 500) || !waiting_players.has(cookie) )) {
+				tab[coord[0]][coord[1]][0] = color;
+				tab[coord[0]][coord[1]][1] = cookie;
+				tab[coord[0]][coord[1]][2] = current_time;
+				waiting_players.set(cookie, current_time.getTime());
+				io.emit("G_update", id, color);
+			}
+
 		}
 	});
 
