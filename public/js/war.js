@@ -14,7 +14,7 @@ var colors = [
 	'lightgray', 'white'
 ];
 
-socket.on("newConnection", (nbCol, nbLig, tab) => { // Apparition nouveau joueur et recuperation infos 
+socket.once("newConnection", (nbCol, nbLig, tab) => { // Apparition nouveau joueur et recuperation infos 
 	creation(nbCol, nbLig);
 	for (let lig = 0; lig < nbLig; lig++) {
 		for (let col = 0; col < nbCol; col++) {
@@ -162,14 +162,14 @@ socket.on("content", (color, pseudo, date) => {  // affichage couleur + pseudo
 		texttoshow = "Ce pixel " + color + " a été coloré par <br><strong>" + pseudo + "</strong><br>il y a " + toText(date) + ".";
 	}
 	else {
-		texttoshow = "Personne n'a coloré ce pixel blanc."
+		texttoshow = "Personne n'a coloré ce pixel " + color
 	}
 	document.getElementById("info").innerHTML = texttoshow;
 });
 
 function toText(date) {
 	date = (date - date % 1000) / 1000;
-	var output;
+	var output = "";
 	if (date == 1) {
 		output = date + " seconde";
 	} else {
@@ -184,7 +184,18 @@ function toText(date) {
 					output = date + " minutes";
 				} else {
 					date = (date - date % 60) / 60;
-					output = date + " heures";
+					if (Math.floor(date / 24) == 1) {
+						output = Math.floor(date / 24) + " jour ";
+					}
+					else if (Math.floor(date / 24) != 0) {
+						output = Math.floor(date / 24) + " jours ";
+					}
+					if (date % 24 == 1) {
+						output += "1 heure";
+					}
+					else if (date % 24 != 0) {
+						output += date % 24 + " heures";
+					}
 				}
 			}
 		}

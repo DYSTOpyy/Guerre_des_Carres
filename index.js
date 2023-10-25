@@ -6,9 +6,9 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const path = require("path");
 const dir = path.resolve(__dirname);
-var cookieParser = require('cookie-parser');
+let cookieParser = require('cookie-parser');
 
-var users = new Map();    // stockage de users
+let users = new Map();    // stockage de users
 
 const Fcolors = new Map([
 	["white", "blanc"],
@@ -34,7 +34,7 @@ const nbLig = 30;
 
 const waiting_players = new Map();
 
-var tab = []            // Tableau stockage couleur initialisé en blanc
+let tab = []            // Tableau stockage couleur initialisé en blanc
 for (let i = 0; i < nbLig; i++) {
 	tab[i] = [];
 	for (let j = 0; j < nbCol; j++) {
@@ -69,14 +69,12 @@ app.get("/login", (req, res) => {     // page de login
 io.on("connection", (socket) => {     // socket.io
 	socket.emit("newConnection", nbCol, nbLig, tab);
 	socket.on("newUser", (username, id) => {
-		let valide = true;        // test si pseudo déjà existant
-		username = username.match(/[\w]+/);
-		for (let name of users.values()) {
-			if (name === username) { valide = false; }
-		}
+		const already_used = [...users.values()].some(name => name === username);  // test si pseudo déjà existant
+				
 
-		if (valide && !users.has(id)) {
-			users.set(id, username);
+		if (!already_used && !users.has(id)) {
+			const sanitized_username = username.match(/[\w]+/);
+			users.set(id, sanitized_username);
 			socket.emit("valide");
 		} else {
 			socket.emit("already");
@@ -85,10 +83,10 @@ io.on("connection", (socket) => {     // socket.io
 
 	// war.html         MAJ de l'état d'un pixel et stockage dans le tableau cote serveur
 	socket.on("update", (id, color, userCookie) => {
-		let coord = String(id).split(",");
-		let cookie = users.get(userCookie);
+		const coord = String(id).split(",");
+		const cookie = users.get(userCookie);
 		if (cookie != null && color != null && Fcolors.has(color) && coord.length == 2 && coord[0] >= 0 && coord[0] < nbCol && coord[1] >= 0 && coord[1] < nbLig) {
-			current_time = new Date();
+			const current_time = new Date();
 			if ((waiting_players.has(cookie) && (current_time.getTime() - waiting_players.get(cookie) > 500) || !waiting_players.has(cookie) )) {
 				tab[coord[0]][coord[1]][0] = color;
 				tab[coord[0]][coord[1]][1] = cookie;
@@ -101,16 +99,15 @@ io.on("connection", (socket) => {     // socket.io
 	});
 
 	socket.on("show", (id) => {
-		let coord = String(id).split(",");
+		const coord = String(id).split(",");
 		if (coord.length == 2 && coord[0] >= 0 && coord[0] < nbCol && coord[1] >= 0 && coord[1] < nbLig) {
-			var color = tab[coord[0]][coord[1]][0];
-			var pseudo = tab[coord[0]][coord[1]][1];
-			var actDate = new Date();
-			var diff = null;
+			const color = tab[coord[0]][coord[1]][0];
+			const pseudo = tab[coord[0]][coord[1]][1];
+			let diff = null;
 			if (tab[coord[0]][coord[1]][2] != null) {
-				diff = actDate.getTime() - (tab[coord[0]][coord[1]][2]).getTime();
+				diff = new Date().getTime() - (tab[coord[0]][coord[1]][2]).getTime();
 			}
-			var colorF = Fcolors.get(color);
+			const colorF = Fcolors.get(color);
 			socket.emit("content", colorF, pseudo, diff);
 		};
 	});
