@@ -69,9 +69,7 @@ app.get("/login", (req, res) => {     // page de login
 io.on("connection", (socket) => {     // socket.io
 	socket.emit("newConnection", nbCol, nbLig, tab);
 	socket.on("newUser", (username, id) => {
-		const already_used = [...users.values()].some(name => name === username);  // test si pseudo déjà existant
-				
-
+		const already_used = [...users.values()].some(name => name === username);  // test si pseudo déjà existant	
 		if (!already_used && !users.has(id)) {
 			const sanitized_username = username.match(/[\w]+/);
 			users.set(id, sanitized_username);
