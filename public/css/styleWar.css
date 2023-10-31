@@ -4,6 +4,12 @@ body {
     
 }
 
+.square:hover {
+    border: solid 1px black;
+    height: 18px;
+    width: 18px;
+}
+
 #content {
     width: 100%;
     height: 100%;
@@ -25,7 +31,7 @@ body {
 
 .row{
     height: 20px;
-    width: 600px;
+    width: 1000px;
     display: block;
 }
 
@@ -66,6 +72,14 @@ body {
     left:0;
     display: inline-block;
     text-align: center;
+}
+
+#nbPlayer {
+    border-color: black;
+    height: 30px;
+    text-align: center;
+    margin: 16px 5px;
+    vertical-align: middle;
 }
 
 #info {

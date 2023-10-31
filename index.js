@@ -9,6 +9,7 @@ const dir = path.resolve(__dirname);
 let cookieParser = require('cookie-parser');
 
 let users = new Map();    // stockage de users
+let nbPlayers = 0;
 
 const Fcolors = new Map([
 	["white", "blanc"],
@@ -29,8 +30,8 @@ const Fcolors = new Map([
 	["magenta", "magenta"]])
 
 // Pour modifier la taille de la zone de jeu
-const nbCol = 30;
-const nbLig = 30;
+const nbCol = 50;
+const nbLig = 50;
 
 const waiting_players = new Map();
 
@@ -68,6 +69,14 @@ app.get("/login", (req, res) => {     // page de login
 
 io.on("connection", (socket) => {     // socket.io
 	socket.emit("newConnection", nbCol, nbLig, tab);
+	nbPlayers++;
+	io.emit("newPlayer", nbPlayers);
+
+	socket.on('disconnect', function() {
+		nbPlayers--;
+		io.emit("newPlayer", nbPlayers);
+	});
+
 	socket.on("newUser", (username, id) => {
 		const already_used = [...users.values()].some(name => name === username);  // test si pseudo déjà existant	
 		if (!already_used && !users.has(id)) {

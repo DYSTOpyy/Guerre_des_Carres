@@ -53,6 +53,7 @@ function creation(nbCol, nbLig) {             // créer les pixels
 	colors.forEach((item) => { // donne la couleur aux boutons
 		document.getElementById("button_" + item).style.backgroundColor = item;
 	});
+	nbPlayerZone();
 	info();
 	lastSelected = document.getElementById("button_" + chosen_color);       // bordure
 	lastSelected.style.borderColor = 'black';
@@ -147,6 +148,15 @@ function addEye() {
 	return eye;
 }
 
+function nbPlayerZone() {
+	newDiv = document.createElement("div");
+	newDiv.id = "nbPlayer";
+	para = document.createElement("p")
+	para.innerHTML = "aaa";
+	newDiv.appendChild(para);
+	document.getElementById("sidebar").appendChild(newDiv);
+}
+
 function info() {
 	newDiv = document.createElement("div");
 	newDiv.id = "info";
@@ -165,6 +175,17 @@ socket.on("content", (color, pseudo, date) => {  // affichage couleur + pseudo
 		texttoshow = "Personne n'a coloré ce pixel " + color
 	}
 	document.getElementById("info").innerHTML = texttoshow;
+});
+
+socket.on("newPlayer", (nbPlayers) => {  // maj de l'affichage du nb de joueur
+	var texttoshow;
+	if (nbPlayers > 1) {
+		texttoshow = "Il y a actuellement " + nbPlayers.toString() + " joueurs en jeu.";
+	} else {
+		texttoshow = "Il y a actuellement " + nbPlayers.toString() + " joueur en jeu.";
+	}
+	
+	document.getElementById("nbPlayer").innerHTML = texttoshow;
 });
 
 function toText(date) {
