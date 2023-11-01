@@ -2,7 +2,7 @@
 
 *Pixel War mais avec peu de budget*
 
-Réalisé par maxlem24 et DYSTOpyy
+Réalisé par maxlem24 et [DYSTOpyy]([https://pages.github.com/](https://github.com/DYSTOpyy))
 
 ## Objectif
 **DOMINEZ LE CHAMP DE BATAILLE !**
