@@ -2,8 +2,7 @@
 
 *Pixel War mais avec peu de budget*
 
-<img src="https://tryhackme-badges.s3.amazonaws.com/maxlem24.png" alt="TryHackMe">
-<img src="https://tryhackme-badges.s3.amazonaws.com/U2pyy.png" alt="TryHackMe">
+Réalisé par maxlem24 et DYSTOpyy
 
 ## Objectif
 **DOMINEZ LE CHAMP DE BATAILLE !**
